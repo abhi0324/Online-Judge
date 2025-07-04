@@ -1,9 +1,13 @@
 import React, {useState} from 'react';
 import API from '../api';
+import {useNavigate} from 'react-router-dom';
+
 
 function Login() {
     const [form, setForm] = useState({email: '', password: ''});
     const [message, setMessage] = useState('');
+
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setForm({...form, [e.target.name]: e.target.value});
@@ -19,6 +23,7 @@ function Login() {
             localStorage.setItem('token', res.data.token);
 
             setMessage(res.data.msg);
+            navigate('/problems');
 
         }
         catch (err){
@@ -26,11 +31,11 @@ function Login() {
         }
     }
     return (
-        <div>
+        <div className='container'>
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
-                <input name='email' placeholder='Email' onChange={handleChange} required />
-                <input name='password' type='password' placeholder='Password' onChange={handleChange} required />
+                <input name='email' placeholder='Email' onChange={handleChange} required /> <br/>
+                <input name='password' type='password' placeholder='Password' onChange={handleChange} required /> <br/>
                 <button type='submit'>Login</button>
             </form>
             <p>{message}</p>

@@ -25,7 +25,7 @@ function MySubmission() {
     }, []);
 
     return (
-        <div>
+        <div className='container'>
             <h2>My Submissions</h2>
             {error && <p style={{color: 'red'}}>{error}</p>}
             <ul>

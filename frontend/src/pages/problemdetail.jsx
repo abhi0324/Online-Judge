@@ -51,7 +51,7 @@ function ProblemDetails(){
     if(!problem) return <p>{message || 'Loading....'}</p>;
 
     return (
-        <div>
+        <div className='container'>
             <h2>{problem.title}</h2>
             <p>{problem.description}</p>
             <p> <strong>Input Format:</strong> {problem.inputFormat} </p>

@@ -25,7 +25,7 @@ function ProblemList() {
     }, []);
 
     return (
-        <div>
+        <div className='container'>
             <h2>Problems</h2>
             {error && <p>{error}</p>}
             <ul>

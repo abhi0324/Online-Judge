@@ -37,17 +37,21 @@ router.post('/register', async (req, res) =>{
 router.post('/login', async (req, res) =>{
     const {email, password} = req.body;
 
+    //console.log('Login attempt with: ', email, password);
+
     try {
         // 1. Check if user exists
         const user = await User.findOne({email});
         if(!user){
-            res.status(400).json({error: "Invalid email or password"});
+            //console.log('User not found for email', email);
+            return res.status(400).json({error: "Invalid email or password"});
         }
 
         // 2. Check if password is correct or not
         const isMatch = await bcrypt.compare(password, user.password);
         if(!isMatch){
-            res.status(400).json({error: "Invalid email or password"});
+            //console.log('Password Match?', isMatch);
+            return res.status(400).json({error: "Invalid email or password"});
         }
 
         // 3. Create JWT token 
@@ -66,7 +70,7 @@ router.post('/login', async (req, res) =>{
     }
     catch (error){
         console.log(error);
-        res.status(500).json({error: 'Login failed'});
+        return res.status(500).json({error: 'Login failed'});
     }
 });
 

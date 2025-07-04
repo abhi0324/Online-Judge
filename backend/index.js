@@ -14,7 +14,7 @@ app.use(express.json());
 app.use('/api/auth', router);
 app.use('/api/protected', protectedroutes);
 app.use('/api/problems', problem);
-app.use('/api/submit', submitRoutes);
+app.use('/api/submissions', submitRoutes);
 
 async function connectDB() {
     try {

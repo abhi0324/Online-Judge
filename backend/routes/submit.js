@@ -6,6 +6,22 @@ import mongoose, { mongo } from 'mongoose';
 
 const router = express.Router();
 
+
+router.get('/', verifyToken, async(req, res) => {
+    try{
+        const submissions = await Submission.find({userId: req.user.id})
+            .populate('problemId', 'title')
+            .sort({submittedAt: -1});
+
+        res.json(submissions);
+
+    }
+    catch(error) {
+        console.log('Error fetching submisssion:', error);
+        res.status(500).json({error: 'Failed to fetch submission'});
+    }
+});
+
 router.post('/', verifyToken, async(req, res) => {
     const {code, language, problemId} = req.body;
     if(!code || !language || !problemId){

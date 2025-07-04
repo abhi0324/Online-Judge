@@ -26,6 +26,6 @@ const problemSchema = new mongoose.Schema({
     }
 });
 
-const problem = mongoose.model('Problem', problemSchema);
+const Problem = mongoose.model('Problem', problemSchema);
 
-export default problem;
+export default Problem;

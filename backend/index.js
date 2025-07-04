@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import router from './routes/auth.js';
 import protectedroutes from './routes/protected.js';
 import problem from './routes/problemroute.js';
+import submitRoutes from './routes/submit.js';
 dotenv.config();
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use('/api/auth', router);
 app.use('/api/protected', protectedroutes);
 app.use('/api/problems', problem);
+app.use('/api/submit', submitRoutes);
 
 async function connectDB() {
     try {

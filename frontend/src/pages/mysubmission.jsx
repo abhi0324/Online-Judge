@@ -1,5 +1,6 @@
 import react , {useState, useEffect} from 'react';
 import API from '../api';
+import '../styles/mysubmission.css';
 
 function MySubmission() {
     const [submission, setSubmission] = useState([]);
@@ -25,21 +26,23 @@ function MySubmission() {
     }, []);
 
     return (
-        <div className='container'>
-            <h2>My Submissions</h2>
-            {error && <p style={{color: 'red'}}>{error}</p>}
-            <ul>
-                {submission.map((sub) => (
-                    <li key={sub._id}>
-                        <strong>{sub.problemId?.title || 'Untitled Problem'}</strong> - {sub.language.toUpperCase()} - {sub.verdict} 
-                        <br/>
-                        <pre>{sub.code}</pre>
-                        <hr/>
-                    </li>
-                ))}
-            </ul>
+        <div className="submission-container">
+          <h2>My Submissions</h2>
+          {error && <p className="error">{error}</p>}
+          <ul>
+            {submission.map((sub) => (
+              <li key={sub._id} className="submission-item">
+                <div className="submission-header">
+                  <strong>{sub.problemId?.title || 'Untitled Problem'}</strong>
+                  <span>{sub.language.toUpperCase()} - {sub.verdict}</span>
+                </div>
+                <pre className="code-block">{sub.code}</pre>
+                <hr />
+              </li>
+            ))}
+          </ul>
         </div>
-    );
+      );
 }
 
 export default MySubmission;

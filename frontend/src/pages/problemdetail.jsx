@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import API from '../api';
+import '../styles/problemdetail.css';
 
 function ProblemDetails(){
     const { id } = useParams();
@@ -51,25 +52,33 @@ function ProblemDetails(){
     if(!problem) return <p>{message || 'Loading....'}</p>;
 
     return (
-        <div className='container'>
+        <div className="problem-details">
             <h2>{problem.title}</h2>
             <p>{problem.description}</p>
-            <p> <strong>Input Format:</strong> {problem.inputFormat} </p>
-            <p> <strong>Output Format:</strong> {problem.outputFormat} </p>
-            <p> <strong>Difficulty: </strong> {problem.difficulty} </p>
+            <p><strong>Input Format:</strong> {problem.inputFormat}</p>
+            <p><strong>Output Format:</strong> {problem.outputFormat}</p>
+            <p><strong>Difficulty:</strong> <span className={`diff-tag ${problem.difficulty.toLowerCase()}`}>{problem.difficulty}</span></p>
 
-            <h3>Submit Code</h3>
+            <h3>Submit Your Code</h3>
             <form onSubmit={handleSubmit}>
-                <textarea rows='10' cols='50' value={code} onChange={(e)=>{ setCode(e.target.value)}} required ></textarea> <br />
-                <select value={language} onChange={(e)=> {setLanguage(e.target.value)}} required>
+                <textarea
+                    rows="12"
+                    cols="60"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    placeholder="Write your code here..."
+                    required
+                ></textarea>
+                <br />
+                <select value={language} onChange={(e) => setLanguage(e.target.value)}>
                     <option value="cpp">C++</option>
                     <option value="python">Python</option>
                     <option value="java">Java</option>
                 </select>
                 <br />
-                <button type='submit'>Submit</button>
+                <button type="submit">Submit</button>
             </form>
-            {message && <p>{message}</p>}
+            {message && <p className="feedback">{message}</p>}
         </div>
     );
 }

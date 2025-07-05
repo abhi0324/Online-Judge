@@ -1,21 +1,24 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import '../styles/home.css';
 
-function Home(){
-    return (
-        <div className='container'>
-            <h1>Online Judge</h1>
-            <p>Welcome to Online Judge platform where you can practice problems, write code, and submit solutions in real time</p>
-            <div style={{marginTop: '2rem'}}>
-                <Link to='/login'>
-                    <button style={{marginRight: '2rem'}}>Login</button>
-                </Link>
-                <Link to='/register'>
-                    <button>Register</button>
-                </Link>
-            </div>
+function Home() {
+  const token = localStorage.getItem('token');
+
+  return (
+    <div className="home-container">
+      <h1>Welcome to AbhiOJ</h1>
+      <p>Your own Online Judge Platform 🧑‍💻</p>
+      {!token ? (
+        <div className="home-buttons">
+          <Link to="/register" className="home-btn">Get Started</Link>
+          <Link to="/login" className="home-btn secondary">Login</Link>
         </div>
-    )
+      ) : (
+        <Link to="/problems" className="home-btn">Go to Problems</Link>
+      )}
+    </div>
+  );
 }
 
 export default Home;

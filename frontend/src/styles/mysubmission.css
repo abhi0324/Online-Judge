@@ -1,0 +1,40 @@
+.submission-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .submission-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .submission-item {
+    margin-bottom: 2rem;
+  }
+  
+  .submission-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .code-block {
+    background-color: #272822;
+    color: #f8f8f2;
+    padding: 1rem;
+    border-radius: 6px;
+    font-family: monospace;
+    overflow-x: auto;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+  }
+  

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import API from '../api';
 import {useNavigate} from 'react-router-dom';
+import '../styles/form.css';
 
 
 function Login() {
@@ -31,14 +32,14 @@ function Login() {
         }
     }
     return (
-        <div className='container'>
+        <div className="form-container">
             <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <input name='email' placeholder='Email' onChange={handleChange} required /> <br/>
-                <input name='password' type='password' placeholder='Password' onChange={handleChange} required /> <br/>
-                <button type='submit'>Login</button>
+            <form onSubmit={handleSubmit} className="form-box">
+                <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
+                <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
+                <button type="submit">Login</button>
             </form>
-            <p>{message}</p>
+            {message && <p className="message">{message}</p>}
         </div>
     );
 };

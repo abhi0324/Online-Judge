@@ -1,0 +1,71 @@
+.compiler-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fdfdfd;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+select {
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.input-box {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  background-color: #fafafa;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.output-box,
+.error-box {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  font-family: monospace;
+}
+
+.output-box {
+  background-color: #e6ffed;
+  border: 1px solid #b6f1c0;
+  color: #065f46;
+}
+
+.error-box {
+  background-color: #ffe6e6;
+  border: 1px solid #ffb3b3;
+  color: #b30000;
+}

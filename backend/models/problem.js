@@ -20,10 +20,17 @@ const problemSchema = new mongoose.Schema({
         enum: ['Easy', 'Medium', 'Hard'], 
         default: 'Easy'
     },
+    testCases: [
+        {
+            input: {type: String},
+            expectedOutput: {type: String},
+        }
+    ],
     createAt: {
         type: Date, 
         default: Date.now
-    }
+    },
+    
 });
 
 const Problem = mongoose.model('Problem', problemSchema);

@@ -3,6 +3,7 @@ import Problem from '../models/problem.js';
 import Submission from '../models/submission.js';
 import verifyToken from '../middlewares/verifyToken.js';
 import mongoose, { mongo } from 'mongoose';
+import { executeCode } from '../utils/executecode.js';
 
 const router = express.Router();
 
@@ -38,17 +39,40 @@ router.post('/', verifyToken, async(req, res) => {
             return res.status(404).json({error: 'Problem not found'});
         }
 
+        const testCases = [
+            { input: '3 4', expectedOutput: '7' },
+            { input: '10 20', expectedOutput: '30' },
+          ];
+
+        let verdict = 'Accepted';
+
+        for(let testCase of testCases){
+            try{
+                const output = await executeCode(code, language, testCase.input);
+                if(output.trim() != testCase.expectedOutput.trim()){
+                    verdict = 'Wrong Answer';
+                    break;
+                }
+
+            }
+            catch(error){
+                console.log("Runtime Error:", error); // Add this line
+                verdict = 'Runtime Error';
+                break;
+            }
+        }
+
         const submission = new Submission({
             userId : req.user.id,
             problemId,
             code,
             language,
-            verdict: 'Pending'
+            verdict,
         })
 
         await submission.save();
         
-        res.status(201).json({msg: 'Submission recevied', submission});
+        return res.status(201).json({msg: verdict, submission});
     }
     catch(error) {
         console.error("Submission Error:", error.message);

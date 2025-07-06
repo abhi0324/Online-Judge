@@ -52,7 +52,7 @@ function OnlineCompiler() {
       <textarea
         className="input-box"
         rows="5"
-        placeholder="// Optional input"
+        placeholder="Input"
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />

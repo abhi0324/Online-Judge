@@ -39,10 +39,8 @@ router.post('/', verifyToken, async(req, res) => {
             return res.status(404).json({error: 'Problem not found'});
         }
 
-        const testCases = [
-            { input: '3 4', expectedOutput: '7' },
-            { input: '10 20', expectedOutput: '30' },
-          ];
+        const testCases = problem.testCases;
+        
 
         let verdict = 'Accepted';
 

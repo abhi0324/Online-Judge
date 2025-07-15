@@ -7,8 +7,8 @@ function Home() {
 
   return (
     <div className="home-container">
-      <h1>Welcome to AbhiOJ</h1>
-      <p>Your own Online Judge Platform 🧑‍💻</p>
+      <h1>Welcome to JudgeX</h1>
+      <p>The next-gen platform to code, conquer, and compete. 🧑‍💻</p>
       {!token ? (
         <div className="home-buttons">
           <Link to="/register" className="home-btn">Get Started</Link>

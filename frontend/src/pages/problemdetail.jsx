@@ -71,11 +71,25 @@ function ProblemDetails() {
       <p>{problem.description}</p>
       <p><strong>Input Format:</strong> {problem.inputFormat}</p>
       <p><strong>Output Format:</strong> {problem.outputFormat}</p>
+      <p><strong>Constraints: </strong> <pre>{problem.constraints}</pre></p>
       <p>
         <strong>Difficulty:</strong>{' '}
         <span className={`diff-tag ${problem.difficulty.toLowerCase()}`}>
           {problem.difficulty}
         </span>
+      </p>
+      <p>
+        <strong>Examples:</strong>{' '} <br />
+        <ul>
+          {problem.examples.map((test) => (
+
+            <li>
+              <p><strong>Input: </strong><pre>{test.input}</pre></p>
+              <p><strong>Output: </strong><pre>{test.output}</pre></p>
+            </li>
+            
+          ))}
+        </ul>
       </p>
 
       <div style={{ marginTop: '2rem' }}>

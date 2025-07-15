@@ -15,13 +15,15 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-left">
-          <Link to="/" className="nav-logo">Online Judge</Link>
+          <Link to="/" className="nav-logo">JudgeX</Link>
         </div>
         <div className="navbar-right">
           {token && (
             <>
               <Link to="/problems" className="nav-link">Problems</Link>
               <Link to="/submissions" className="nav-link">Submissions</Link>
+              <Link to="/leaderboard" className="nav-link">Leaderboard</Link>
+
             </>
           )}
           {!token ? (

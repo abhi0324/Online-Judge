@@ -7,6 +7,7 @@ import MySubmission from './pages/mysubmission.jsx';
 import Home from './pages/home.jsx';
 import Navbar from './components/navbar.jsx';
 import './styles/global.css';
+import Leaderboard from './pages/leaderboard.jsx';
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
         <Route path="/problems" element={<ProblemList />} />
         <Route path="/problems/:id" element={<ProblemDetails />} />
         <Route path="/submissions" element={<MySubmission />} />
-        
+        <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
     </Router>
   );

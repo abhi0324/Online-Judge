@@ -6,13 +6,13 @@ const router = express.Router();
 
 
 router.post('/', verifyToken, async(req, res)=> {
-    const {title, description, inputFormat, outputFormat, difficulty, testCases} = req.body;
+    const {title, description, inputFormat, outputFormat, constraints , difficulty, examples ,testCases} = req.body;
     if(!title || !description) {
         return res.status(400).json({error: "Title and description are required"});
     }
 
     try{
-        const newProblem = await new Problem({title, description, inputFormat, outputFormat, difficulty, testCases});
+        const newProblem = await new Problem({title, description, inputFormat, outputFormat, constraints , examples, difficulty, testCases});
         await newProblem.save();
         res.status(201).json({msg: "Problem saved succesfully", problem: newProblem});
 

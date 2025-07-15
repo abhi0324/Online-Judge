@@ -7,6 +7,7 @@ import protectedroutes from './routes/protected.js';
 import problem from './routes/problemroute.js';
 import submitRoutes from './routes/submit.js';
 import Run from './routes/run.js';
+import Leaderboard from './routes/leaderboard.js';
 dotenv.config();
 
 const app = express();
@@ -17,6 +18,7 @@ app.use('/api/protected', protectedroutes);
 app.use('/api/problems', problem);
 app.use('/api/submissions', submitRoutes);
 app.use('/api/run', Run);
+app.use('/api/leaderboard', Leaderboard);
 
 async function connectDB() {
     try {

@@ -15,11 +15,20 @@ const problemSchema = new mongoose.Schema({
     outputFormat: {
         type: String
     },
+    constraints: {
+        type: String
+    },
     difficulty: {
         type: String,
         enum: ['Easy', 'Medium', 'Hard'], 
         default: 'Easy'
     },
+    examples: [
+        {
+            input: {type: String},
+            output: {type: String},
+        }
+    ],
     testCases: [
         {
             input: {type: String},

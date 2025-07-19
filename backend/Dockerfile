@@ -1,4 +1,12 @@
-FROM node:20
+FROM node:20-alpine
+
+# Install system-level compilers and utilities
+RUN apk update && apk add --no-cache \
+    build-base \
+    g++ \
+    gcc \
+    make \
+    python3
 
 WORKDIR /app
 
@@ -10,6 +18,7 @@ COPY . .
 EXPOSE 8000
 
 CMD ["node", "index.js"]
+
 
 
 # To build docker image

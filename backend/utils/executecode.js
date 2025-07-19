@@ -11,6 +11,10 @@ export const executeCode = (code, language, input='') => {
         let command = '';
 
         try {
+          if (!fs.existsSync('temp')) {
+            fs.mkdirSync('temp');
+        }
+        
             if(input){
                 fs.writeFileSync(inputPath, input);
             }

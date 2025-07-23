@@ -7,7 +7,17 @@ import '../styles/problemdetail.css';
 function ProblemDetails() {
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
-  const [code, setCode] = useState('// Write your code here');
+  const [code, setCode] = useState(`#include<iostream>
+using namespace std;
+  
+int main()
+{
+
+    return 0;
+}`);
+    
+    
+    
   const [language, setLanguage] = useState('cpp');
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
@@ -63,6 +73,35 @@ function ProblemDetails() {
     }
   };
 
+  const handleLanguageChange = (e) => {
+    const selectedLang = e.target.value;
+    setLanguage(selectedLang);
+    setCode(codeTemplates[selectedLang]);
+  };
+  
+
+  const codeTemplates = {
+    cpp: `#include<iostream>
+using namespace std;
+
+int main()
+{
+    
+    return 0;
+}`,
+  python: `def main():
+    pass
+
+if __name__ == "__main__":
+    main()`,
+  java: `public class Main {
+    public static void main(String[] args) {
+        // your code here
+    }
+}`
+  };
+  
+
   if (!problem) return <p>{message || 'Loading...'}</p>;
 
   return (
@@ -94,7 +133,7 @@ function ProblemDetails() {
 
       <div style={{ marginTop: '2rem' }}>
         <label><strong>Language:</strong></label>{' '}
-        <select value={language} onChange={(e) => setLanguage(e.target.value)}>
+        <select value={language} onChange={handleLanguageChange}>
           <option value="cpp">C++</option>
           <option value="python">Python</option>
           <option value="java">Java</option>

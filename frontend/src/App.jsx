@@ -8,6 +8,8 @@ import Home from './pages/home.jsx';
 import Navbar from './components/navbar.jsx';
 import './styles/global.css';
 import Leaderboard from './pages/leaderboard.jsx';
+import AdminDashboard from './pages/admindashboard.jsx';
+import ProtectedRoute from './pages/protectedroute.jsx';
 
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
         <Route path="/problems/:id" element={<ProblemDetails />} />
         <Route path="/submissions" element={<MySubmission />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard/></ProtectedRoute>} />
+        
       </Routes>
     </Router>
   );

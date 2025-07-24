@@ -16,24 +16,24 @@
   margin: 0.5rem 0;
 }
 
-.diff-tag {
+.problem-details .diff-tag {
   padding: 0.3rem 0.6rem;
   border-radius: 5px;
   color: white;
   font-weight: bold;
 }
 
-.diff-tag.easy {
+.problem-details .diff-tag.easy {
   background-color: green;
 }
-.diff-tag.medium {
+.problem-details .diff-tag.medium {
   background-color: orange;
 }
-.diff-tag.hard {
+.problem-details .diff-tag.hard {
   background-color: red;
 }
 
-textarea {
+.problem-details textarea {
   width: 100%;
   padding: 1rem;
   margin: 1rem 0;
@@ -44,7 +44,8 @@ textarea {
   background: #f9f9f9;
 }
 
-select, button {
+.problem-details select,
+.problem-details button {
   padding: 0.5rem 1rem;
   margin-top: 0.5rem;
   border-radius: 5px;
@@ -52,23 +53,23 @@ select, button {
   font-size: 1rem;
 }
 
-button {
+.problem-details button {
   background-color: #007bff;
   color: white;
   cursor: pointer;
 }
 
-button:hover {
+.problem-details button:hover {
   background-color: #0056b3;
 }
 
-.feedback {
+.problem-details .feedback {
   margin-top: 1rem;
   font-weight: bold;
   color: green;
 }
 
-.review-box {
+.problem-details .review-box {
   background: linear-gradient(135deg, #f9fafb, #e5e7eb);
   color: #111827;
   padding: 24px 28px;
@@ -83,12 +84,12 @@ button:hover {
   border: 1px solid #e0e0e0;
 }
 
-.review-box:hover {
+.problem-details .review-box:hover {
   transform: translateY(-3px);
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
 }
 
-.review-box h3 {
+.problem-details .review-box h3 {
   font-size: 1.7rem;
   font-weight: 600;
   color: #3b82f6;
@@ -97,18 +98,18 @@ button:hover {
   padding-left: 12px;
 }
 
-.review-content {
+.problem-details .review-content {
   font-size: 1.05rem;
   line-height: 1.75;
   color: #374151;
   white-space: pre-wrap;
 }
 
-.review-content p {
+.problem-details .review-content p {
   margin-bottom: 14px;
 }
 
-.review-content code {
+.problem-details .review-content code {
   background-color: #f3f4f6;
   padding: 2px 6px;
   border-radius: 6px;

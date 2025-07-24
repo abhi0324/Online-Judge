@@ -12,6 +12,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 1rem;
+    position: relative;
   }
   
   .nav-logo {
@@ -50,4 +51,60 @@
   .logout-btn:hover {
     background-color: #f0f0f0;
   }
+  
+/* Responsive styles */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 1.5rem;
+  width: 40px;
+  height: 40px;
+  z-index: 20;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+.hamburger span {
+  display: block;
+  height: 3px;
+  width: 28px;
+  background: white;
+  margin: 4px 0;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+@media (max-width: 700px) {
+  .navbar-container {
+    flex-direction: row;
+    align-items: center;
+    padding: 0 0.5rem;
+  }
+  .nav-logo {
+    margin-right: auto;
+  }
+  .navbar-right {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+    display: none;
+    background: #007bff;
+    padding: 0.5rem 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .navbar-right.open {
+    display: flex;
+  }
+  .hamburger {
+    display: flex;
+    margin-left: 1.5rem;
+  }
+}
   

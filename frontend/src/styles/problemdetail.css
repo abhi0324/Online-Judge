@@ -67,3 +67,51 @@ button:hover {
   font-weight: bold;
   color: green;
 }
+
+.review-box {
+  background: linear-gradient(135deg, #f9fafb, #e5e7eb);
+  color: #111827;
+  padding: 24px 28px;
+  border-radius: 20px;
+  margin-top: 32px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+}
+
+.review-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+}
+
+.review-box h3 {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #3b82f6;
+  margin-bottom: 18px;
+  border-left: 6px solid #3b82f6;
+  padding-left: 12px;
+}
+
+.review-content {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #374151;
+  white-space: pre-wrap;
+}
+
+.review-content p {
+  margin-bottom: 14px;
+}
+
+.review-content code {
+  background-color: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  color: #140606;
+}

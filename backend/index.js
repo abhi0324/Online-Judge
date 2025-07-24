@@ -8,6 +8,7 @@ import problem from './routes/problemroute.js';
 import submitRoutes from './routes/submit.js';
 import Run from './routes/run.js';
 import Leaderboard from './routes/leaderboard.js';
+import gemini from './routes/gemini-review.js';
 dotenv.config();
 
 const app = express();
@@ -19,6 +20,7 @@ app.use('/api/problems', problem);
 app.use('/api/submissions', submitRoutes);
 app.use('/api/run', Run);
 app.use('/api/leaderboard', Leaderboard);
+app.use('/api/gemini-review', gemini);
 
 async function connectDB() {
     try {

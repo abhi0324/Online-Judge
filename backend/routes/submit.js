@@ -70,7 +70,7 @@ router.post('/', verifyToken, async(req, res) => {
 
         await submission.save();
         
-        return res.status(201).json({msg: verdict, submission});
+        return res.status(201).json({msg: verdict, submission, code});
     }
     catch(error) {
         console.error("Submission Error:", error.message);

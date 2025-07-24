@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import API from '../api';
 import Editor from '@monaco-editor/react';
 import '../styles/problemdetail.css';
+import ReactMarkdown from 'react-markdown';
+
 
 function ProblemDetails() {
   const { id } = useParams();
@@ -21,8 +23,11 @@ int main()
   const [language, setLanguage] = useState('cpp');
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loadingRun, setLoadingRun] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [loadingReview, setLoadingReview] = useState(false);
   const [message, setMessage] = useState('');
+  const [review, setReview] = useState('');
 
   useEffect(() => {
     const fetchProblem = async () => {
@@ -40,7 +45,7 @@ int main()
   }, [id]);
 
   const handleRun = async () => {
-    setLoading(true);
+    setLoadingRun(true);
     setOutput('');
     setMessage('');
     try {
@@ -49,13 +54,14 @@ int main()
     } catch (err) {
       setOutput(err.response?.data?.output || 'Error running code');
     } finally {
-      setLoading(false);
+      setLoadingRun(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
+    setLoadingSubmit(true);
     try {
       const token = localStorage.getItem('token');
       const res = await API.post(
@@ -70,6 +76,8 @@ int main()
       setMessage(res.data.msg);
     } catch (err) {
       setMessage(err.response?.data?.error || 'Submission failed');
+    } finally {
+      setLoadingSubmit(false);
     }
   };
 
@@ -100,6 +108,19 @@ if __name__ == "__main__":
     }
 }`
   };
+  
+
+  const handleReview = async () => {
+    setLoadingReview(true);
+    try {
+      const res = await API.post('/gemini-review', { code });
+      setReview(res.data.response);
+    } catch (err) {
+      setReview(err.response?.data?.output || 'Error while reviewing code');
+    } finally {
+      setLoadingReview(false);
+    }
+  }
   
 
   if (!problem) return <p>{message || 'Loading...'}</p>;
@@ -158,11 +179,16 @@ if __name__ == "__main__":
       />
 
       <div style={{ marginTop: '1rem' }}>
-        <button onClick={handleRun} disabled={loading}>
-          {loading ? '⏳ Running...' : '▶️ Run Code'}
+        <button onClick={handleRun} disabled={loadingRun}>
+          {loadingRun ? '⏳ Running...' : '▶️ Run Code'}
         </button>{' '}
-        <button onClick={handleSubmit} disabled={loading}>
-          📤 Submit Code
+        <button onClick={handleSubmit} disabled={loadingSubmit}>
+        {loadingSubmit ? '⏳ Submitting...' : '📤 Submit Code'}
+          
+        </button>{' '}
+        <button onClick={handleReview} disabled={loadingReview}>
+        {loadingReview ? '⏳ Reviewing...' : '📤 AI Review'}
+          
         </button>
       </div>
 
@@ -179,6 +205,17 @@ if __name__ == "__main__":
           <p>{message}</p>
         </div>
       )}
+
+      {review && (
+        <div className="review-box">
+          <h3>🤖 AI Review:</h3>
+          <div className="review-content">
+            <ReactMarkdown>{review}</ReactMarkdown>
+          </div>
+        </div>
+      )}
+
+
     </div>
   );
 }

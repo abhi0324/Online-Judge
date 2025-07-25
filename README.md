@@ -1,232 +1,212 @@
-# Online Judge
+# Online Judge Platform
 
-A full-stack web application for programming competitions and practice, built with React frontend and Node.js backend.
+A full-stack web application for coding practice and programming competitions, featuring real-time code execution, AI-powered code review, user authentication, problem management, and a leaderboard.
+
+---
 
 ## 🚀 Features
 
-- **User Authentication**: Secure registration and login system with JWT tokens
-- **Problem Management**: Browse and view programming problems
-- **Code Submission**: Submit solutions and track submission history
-- **User Dashboard**: View personal submissions and progress
-- **Responsive Design**: Modern UI that works on desktop and mobile
+- **User Authentication**: Secure registration/login with JWT.
+- **Problem Management**: Admins can create, edit, and delete problems with test cases and examples.
+- **Code Submission & Evaluation**: Users submit code in C++, Python, or Java; code is executed and auto-evaluated against test cases.
+- **AI Code Review**: Get instant feedback on your code using Google Gemini AI.
+- **Leaderboard**: Track top users by problems solved.
+- **Submission History**: View your past submissions and verdicts.
+- **Responsive UI**: Modern, mobile-friendly React interface.
+
+---
 
 ## 🛠️ Tech Stack
 
-### Backend
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **MongoDB** - Database with Mongoose ODM
-- **JWT** - Authentication tokens
-- **bcrypt** - Password hashing
-- **CORS** - Cross-origin resource sharing
+**Backend**
+- Node.js, Express.js
+- MongoDB (Mongoose)
+- JWT, bcrypt
+- Google Gemini AI API
+- Child process for code execution
 
-### Frontend
-- **React 19** - UI library
-- **Vite** - Build tool and dev server
-- **React Router** - Client-side routing
-- **Axios** - HTTP client
-- **ESLint** - Code linting
-- **Monaco Editor** - Code editor component
+**Frontend**
+- React 19, Vite
+- React Router
+- Axios
+- Monaco Editor
+
+---
 
 ## 📁 Project Structure
 
 ```
 Online-judge/
 ├── backend/
-│   ├── middlewares/     # Authentication middleware
-│   ├── models/          # MongoDB schemas
-│   ├── routes/          # API endpoints
-│   ├── utils/           # Code execution utility
-│   ├── index.js         # Server entry point
+│   ├── models/         # Mongoose schemas (User, Problem, Submission)
+│   ├── routes/         # API endpoints (auth, problems, submissions, leaderboard, AI review)
+│   ├── middlewares/    # Auth and admin checks
+│   ├── utils/          # Code execution, AI integration
+│   ├── index.js        # Server entry
 │   └── package.json
 ├── frontend/
 │   ├── src/
-│   │   ├── components/  # Reusable UI components
-│   │   ├── pages/       # Page components
-│   │   ├── styles/      # CSS files
-│   │   ├── App.jsx      # Main app component
-│   │   └── api.js       # API configuration
+│   │   ├── pages/      # Main pages (Home, Problems, Admin, etc.)
+│   │   ├── components/ # Navbar, reusable UI
+│   │   ├── styles/     # CSS modules
+│   │   └── api.js      # Axios config
 │   ├── index.html
 │   └── package.json
-└── README.md
+└── compiler/           # (Reserved for future use)
 ```
 
-## 🧩 Backend Details
+---
 
-### API Endpoints
+## 🧩 Backend Overview
 
-#### Authentication
-- `POST /api/auth/register` - Register a new user (username, email, password)
-- `POST /api/auth/login` - Login with email and password, returns JWT token
+### Main Endpoints
 
-#### Problems
-- `POST /api/problems` - Add a new problem (protected)
-- `GET /api/problems` - Get all problems (protected)
-- `GET /api/problems/:id` - Get a specific problem by ID (protected)
+- **Auth**
+  - `POST /api/auth/register` — Register new user
+  - `POST /api/auth/login` — Login, returns JWT
 
-#### Submissions
-- `POST /api/submissions` - Submit a solution to a problem (protected)
-- `GET /api/submissions` - Get all submissions for the logged-in user (protected)
+- **Problems**
+  - `GET /api/problems` — List all problems (auth required)
+  - `GET /api/problems/:id` — Get problem details (auth required)
+  - `POST /api/problems` — Add problem (admin only)
+  - `PUT /api/problems/:id` — Edit problem (admin only)
+  - `DELETE /api/problems/:id` — Delete problem (admin only)
 
-#### Code Execution
-- `POST /api/run` - Run code with given language and input (open)
+- **Submissions**
+  - `POST /api/submissions` — Submit code for a problem (auth required)
+  - `GET /api/submissions` — Get user’s submissions (auth required)
 
-#### Protected
-- `GET /api/protected/secret` - Example protected route, returns user info
+- **Leaderboard**
+  - `GET /api/leaderboard` — Get users ranked by problems solved (auth required)
+
+- **Code Execution**
+  - `POST /api/run` — Run code with input (open)
+
+- **AI Code Review**
+  - `POST /api/gemini-review` — Get AI feedback on code (auth required)
 
 ### Data Models
 
-#### User
-- `username`: String, required, unique
-- `email`: String, required, unique
-- `password`: String, required (hashed)
-- `timestamps`: Created/updated at
-
-#### Problem
-- `title`: String, required
-- `description`: String, required
-- `inputFormat`: String
-- `outputFormat`: String
-- `difficulty`: String (Easy, Medium, Hard)
-- `testCases`: Array of `{ input, expectedOutput }`
-- `createdAt`: Date
-
-#### Submission
-- `userId`: ObjectId (User), required
-- `problemId`: ObjectId (Problem), required
-- `code`: String, required
-- `language`: String, required
-- `verdict`: String (Accepted, Wrong Answer, Runtime Error, etc.)
-- `submittedAt`: Date
-
-### Middleware
-- **verifyToken**: Checks for JWT in Authorization header, verifies and attaches user info to request. Used to protect routes.
+- **User**: username, email, password (hashed), isAdmin, timestamps
+- **Problem**: title, description, input/output format, constraints, difficulty, examples, testCases, createdAt
+- **Submission**: userId, problemId, code, language, verdict, submittedAt
 
 ### Utilities
-- **executeCode**: Runs submitted code in C++, Python, or Java using child processes, supports input redirection, and cleans up temp files. Used for both code running and submission evaluation.
 
-### Server Entry (index.js)
-- Sets up Express app, connects to MongoDB, configures CORS and JSON parsing, mounts all routes, and starts the server.
+- **executeCode**: Runs code in a sandboxed environment, supports C++, Python, Java.
+- **runGemini**: Integrates with Google Gemini AI for code review.
 
-## 🖥️ Frontend Details
+---
 
-### Main Routing (App.jsx)
-- `/` - Home page
-- `/register` - Registration page
-- `/login` - Login page
-- `/problems` - List of all problems (protected)
-- `/problems/:id` - Problem details, code editor, run/submit (protected)
-- `/submissions` - User's submission history (protected)
+## 🖥️ Frontend Overview
+
+### Main Pages
+
+- `/` — Home
+- `/register` — Register
+- `/login` — Login
+- `/problems` — Problem list
+- `/problems/:id` — Problem details, code editor, run/submit
+- `/submissions` — User’s submission history
+- `/leaderboard` — Leaderboard
+- `/admin-dashboard` — Admin panel (problem management, protected)
 
 ### Components
-- **Navbar**: Top navigation bar, shows links based on login state (Home, Problems, Submissions, Login/Register, Logout)
 
-### Pages
-- **Home**: Welcome page, shows call-to-action for register/login or link to problems if logged in
-- **Register**: Registration form, posts to `/auth/register`
-- **Login**: Login form, posts to `/auth/login`, saves JWT to localStorage
-- **ProblemList**: Fetches and displays all problems, links to details
-- **ProblemDetails**: Fetches problem by ID, shows description, Monaco code editor, language selector, input box, run and submit buttons, displays output and verdict
-- **MySubmission**: Fetches and displays user's submissions, shows code, verdict, and problem title
+- **Navbar**: Dynamic links based on auth state
+- **ProtectedRoute**: Guards admin routes
 
-### API Configuration
-- **api.js**: Axios instance with baseURL set to backend API, attaches JWT token for protected requests
+### Admin Dashboard
+
+- Add/edit/delete problems, including test cases and examples
+- Only accessible to users with `isAdmin: true`
 
 ### Styles
-- **global.css**: Global styles for layout, forms, buttons, etc.
-- **navbar.css**: Styles for navigation bar
-- **form.css, home.css, problemlist.css, problemdetail.css, mysubmission.css**: Page/component-specific styles
 
-### Key Dependencies
-- React, React Router, Axios, Monaco Editor (frontend)
-- Express, Mongoose, JWT, bcrypt, dotenv, nodemon (backend)
+- Modular CSS for each page/component
+- Global styles for layout and theming
 
-## 🚀 Getting Started
+---
+
+## ⚡ Getting Started
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB database
-- npm or yarn package manager
+
+- Node.js v16+
+- MongoDB
+- Google Gemini API key (for AI review)
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone <repo-url>
    cd Online-judge
    ```
 
-2. **Set up the backend**
+2. **Backend setup**
    ```bash
    cd backend
    npm install
    ```
-
-3. **Set up environment variables**
-   Create a `.env` file in the backend directory:
-   ```env
-   MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret_key
+   Create `.env` in `backend/`:
+   ```
+   MONGO_URI=your_mongodb_uri
+   JWT_SECRET=your_jwt_secret
    PORT=8000
+   GEMINI_API_KEY=your_gemini_api_key
    ```
 
-4. **Set up the frontend**
+3. **Frontend setup**
    ```bash
    cd ../frontend
    npm install
    ```
 
-### Running the Application
+### Running the App
 
-1. **Start the backend server**
-   ```bash
-   cd backend
-   npm run dev
-   ```
-   The server will run on `http://localhost:8000`
+- **Start backend**
+  ```bash
+  cd backend
+  npm run dev
+  # Runs on http://localhost:8000
+  ```
 
-2. **Start the frontend development server**
-   ```bash
-   cd frontend
-   npm run dev
-   ```
-   The frontend will run on `http://localhost:5173`
+- **Start frontend**
+  ```bash
+  cd frontend
+  npm run dev
+  # Runs on http://localhost:5173
+  ```
+
+---
 
 ## 🎯 Usage
 
-1. **Register/Login**: Create an account or login to access the platform
-2. **Browse Problems**: View available programming problems
-3. **Submit Solutions**: Write and submit your code solutions
-4. **Track Progress**: Monitor your submission history and performance
+- Register/login to access problems
+- Browse and solve problems
+- Submit code and get instant verdicts
+- Get AI-powered code review
+- Track your progress and climb the leaderboard
+- Admins: Manage problems via dashboard
 
-## 🔧 Development
-
-### Backend Development
-```bash
-cd backend
-npm run dev  # Start with nodemon for auto-reload
-```
-
-### Frontend Development
-```bash
-cd frontend
-npm run dev  # Start Vite dev server
-npm run build  # Build for production
-npm run lint  # Run ESLint
-```
+---
 
 ## 📝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Fork the repo
+2. Create a feature branch
+3. Commit and push your changes
+4. Open a Pull Request
+
+---
 
 ## 📄 License
 
 This project is licensed under the ISC License.
 
+---
+
 ## 🤝 Support
 
-If you encounter any issues or have questions, please open an issue on the repository.
+For issues or questions, open an issue in the repository.

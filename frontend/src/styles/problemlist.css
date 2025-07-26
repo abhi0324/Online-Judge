@@ -5,6 +5,7 @@
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
 }
 
 .pl-title {
@@ -15,20 +16,25 @@
   margin-bottom: 1.5rem;
 }
 
+/* Toolbar (Search + Filter) */
 .toolbar {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .search-input,
 .filter-select {
+  flex: 1;
   padding: 0.6rem 1rem;
   border-radius: 8px;
   border: 1px solid #ddd;
   font-size: 1rem;
   transition: all 0.3s ease;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .search-input:focus,
@@ -38,6 +44,7 @@
   box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
 }
 
+/* Problem List */
 .problem-list {
   list-style: none;
   padding: 0;
@@ -56,6 +63,8 @@
   border: 1px solid #e1e1e1;
   transition: transform 0.2s ease, background 0.3s ease;
   flex-wrap: wrap;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .problem-card:hover {
@@ -66,9 +75,11 @@
 
 .problem-card-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
+  gap: 10px;
+  flex-wrap: nowrap;
 }
 
 .problem-title {
@@ -84,13 +95,16 @@
   font-size: 0.8rem;
   font-weight: 600;
   color: #fff;
+  white-space: nowrap;
 }
 
 .badge.easy { background: #28a745; }
 .badge.medium { background: #ffc107; color: #222; }
 .badge.hard { background: #dc3545; }
 
+/* View Button */
 .view-btn {
+  display: inline-block;
   padding: 0.5rem 1.2rem;
   background: linear-gradient(45deg, #007bff, #0056b3);
   color: #fff;
@@ -98,7 +112,8 @@
   border-radius: 6px;
   font-size: 0.9rem;
   transition: transform 0.2s, box-shadow 0.2s;
-  margin-top: 0.8rem;
+  white-space: nowrap;
+  margin-top: 0.5rem;
 }
 
 .view-btn:hover {
@@ -106,39 +121,39 @@
   box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
 }
 
-/* Mobile Layout */
+/* MOBILE RESPONSIVE */
 @media (max-width: 700px) {
-  .problem-card {
-    display: flex;
+  .toolbar {
     flex-direction: column;
+    gap: 0.8rem;
     align-items: stretch;
+  }
+
+  .search-input,
+  .filter-select {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+
+  .problem-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
     padding: 1rem;
-    gap: 0.6rem;
   }
 
   .problem-card-row {
-    display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    align-items: center;
     width: 100%;
   }
 
   .view-btn {
-    display: block;
     width: 100%;
     text-align: center;
-    padding: 0.8rem 1rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    background: linear-gradient(45deg, #007bff, #0056b3);
-    color: white;
-    text-decoration: none;
+    margin-top: 0.5rem;
+    padding: 0.6rem 0;
     box-sizing: border-box;
-    overflow-wrap: break-word;
-  }
-
-  .view-btn:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
   }
 }

@@ -115,6 +115,10 @@ if __name__ == "__main__":
     setCode(codeTemplates[selectedLang]);
   };
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+  };
+
   if (!problem) return <p className="loading-text">{message || 'Loading...'}</p>;
 
   return (
@@ -133,9 +137,26 @@ if __name__ == "__main__":
         <strong>Examples:</strong>{' '} <br />
         <ul>
           {problem.examples.map((test, idx) => (
-            <li key={idx}>
-              <p><strong>Input: </strong><pre>{test.input}</pre></p>
-              <p><strong>Output: </strong><pre>{test.output}</pre></p>
+            <li key={idx} className="example-block">
+              <div className="example-header">
+                <p><strong>Input: </strong></p>
+                <button 
+                  className="copy-btn" 
+                  onClick={() => copyToClipboard(test.input)}>
+                  📋 Copy
+                </button>
+              </div>
+              <pre>{test.input}</pre>
+
+              <div className="example-header">
+                <p><strong>Output: </strong></p>
+                <button 
+                  className="copy-btn" 
+                  onClick={() => copyToClipboard(test.output)}>
+                  📋 Copy
+                </button>
+              </div>
+              <pre>{test.output}</pre>
             </li>
           ))}
         </ul>

@@ -139,3 +139,32 @@
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+
+.example-block {
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.example-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.2rem 0;
+}
+
+.example-header .copy-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.example-header .copy-btn:hover {
+  background: #0056b3;
+}

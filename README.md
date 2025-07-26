@@ -1,4 +1,6 @@
-# Online Judge Platform
+# JudgeX
+
+[Live Demo](https://judgex.vercel.app/)
 
 A full-stack web application for coding practice and programming competitions, featuring real-time code execution, AI-powered code review, user authentication, problem management, and a leaderboard.
 
@@ -24,12 +26,14 @@ A full-stack web application for coding practice and programming competitions, f
 - JWT, bcrypt
 - Google Gemini AI API
 - Child process for code execution
+- Docker support
 
 **Frontend**
 - React 19, Vite
-- React Router
+- React Router v7
 - Axios
 - Monaco Editor
+- Modular CSS
 
 ---
 
@@ -39,20 +43,28 @@ A full-stack web application for coding practice and programming competitions, f
 Online-judge/
 ├── backend/
 │   ├── models/         # Mongoose schemas (User, Problem, Submission)
-│   ├── routes/         # API endpoints (auth, problems, submissions, leaderboard, AI review)
+│   ├── routes/         # API endpoints (auth, problems, submissions, leaderboard, AI review, protected)
 │   ├── middlewares/    # Auth and admin checks
 │   ├── utils/          # Code execution, AI integration
+│   ├── temp/           # Temporary files for code execution
 │   ├── index.js        # Server entry
-│   └── package.json
+│   ├── package.json
+│   ├── Dockerfile      # Docker support for backend
+│   └── .dockerignore
 ├── frontend/
 │   ├── src/
 │   │   ├── pages/      # Main pages (Home, Problems, Admin, etc.)
-│   │   ├── components/ # Navbar, reusable UI
+│   │   ├── components/ # Navbar, Footer, reusable UI
+│   │   ├── layouts/    # Layout wrapper
 │   │   ├── styles/     # CSS modules
 │   │   └── api.js      # Axios config
 │   ├── index.html
-│   └── package.json
-└── compiler/           # (Reserved for future use)
+│   ├── package.json
+│   ├── vite.config.js
+│   └── README.md
+├── compiler/           # (Reserved for future use)
+├── keys/               # (Empty, for future use or secrets)
+└── README.md           # Project documentation
 ```
 
 ---
@@ -64,26 +76,23 @@ Online-judge/
 - **Auth**
   - `POST /api/auth/register` — Register new user
   - `POST /api/auth/login` — Login, returns JWT
-
 - **Problems**
   - `GET /api/problems` — List all problems (auth required)
   - `GET /api/problems/:id` — Get problem details (auth required)
   - `POST /api/problems` — Add problem (admin only)
   - `PUT /api/problems/:id` — Edit problem (admin only)
   - `DELETE /api/problems/:id` — Delete problem (admin only)
-
 - **Submissions**
   - `POST /api/submissions` — Submit code for a problem (auth required)
   - `GET /api/submissions` — Get user’s submissions (auth required)
-
 - **Leaderboard**
   - `GET /api/leaderboard` — Get users ranked by problems solved (auth required)
-
 - **Code Execution**
   - `POST /api/run` — Run code with input (open)
-
 - **AI Code Review**
   - `POST /api/gemini-review` — Get AI feedback on code (auth required)
+- **Protected**
+  - `GET /api/protected` — Example protected route (auth required)
 
 ### Data Models
 
@@ -93,8 +102,25 @@ Online-judge/
 
 ### Utilities
 
-- **executeCode**: Runs code in a sandboxed environment, supports C++, Python, Java.
-- **runGemini**: Integrates with Google Gemini AI for code review.
+- **executeCode**: Runs code in a sandboxed environment, supports C++, Python, Java. Handles compilation, execution, and cleanup of temp files.
+- **runGemini**: Integrates with Google Gemini AI for code review and feedback.
+
+### Middleware
+
+- **verifyToken**: Checks JWT for protected routes
+- **verifyAdmin**: Checks if user is admin for admin-only routes
+
+### Docker Support
+
+- **Build image:**
+  ```bash
+  cd backend
+  docker build -t online-judge-backend .
+  ```
+- **Run container:**
+  ```bash
+  docker run --env-file .env -p 8000:8000 online-judge-backend
+  ```
 
 ---
 
@@ -111,15 +137,12 @@ Online-judge/
 - `/leaderboard` — Leaderboard
 - `/admin-dashboard` — Admin panel (problem management, protected)
 
-### Components
+### Components & Layout
 
 - **Navbar**: Dynamic links based on auth state
+- **Footer**: Persistent footer
+- **Layout**: Wraps all main pages for consistent UI
 - **ProtectedRoute**: Guards admin routes
-
-### Admin Dashboard
-
-- Add/edit/delete problems, including test cases and examples
-- Only accessible to users with `isAdmin: true`
 
 ### Styles
 
@@ -135,6 +158,7 @@ Online-judge/
 - Node.js v16+
 - MongoDB
 - Google Gemini API key (for AI review)
+- (Optional) Docker for backend
 
 ### Installation
 
@@ -177,6 +201,13 @@ Online-judge/
   cd frontend
   npm run dev
   # Runs on http://localhost:5173
+  ```
+
+- **(Optional) Run backend with Docker**
+  ```bash
+  cd backend
+  docker build -t online-judge-backend .
+  docker run --env-file .env -p 8000:8000 online-judge-backend
   ```
 
 ---

@@ -5,7 +5,6 @@ import Editor from '@monaco-editor/react';
 import '../styles/problemdetail.css';
 import ReactMarkdown from 'react-markdown';
 
-
 function ProblemDetails() {
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
@@ -17,9 +16,6 @@ int main()
 
     return 0;
 }`);
-    
-    
-    
   const [language, setLanguage] = useState('cpp');
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
@@ -43,6 +39,26 @@ int main()
     };
     fetchProblem();
   }, [id]);
+
+  const codeTemplates = {
+    cpp: `#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    return 0;
+}`,
+    python: `def main():
+    pass
+
+if __name__ == "__main__":
+    main()`,
+    java: `public class Main {
+    public static void main(String[] args) {
+        // your code here
+    }
+}`
+  };
 
   const handleRun = async () => {
     setLoadingRun(true);
@@ -81,35 +97,6 @@ int main()
     }
   };
 
-  const handleLanguageChange = (e) => {
-    const selectedLang = e.target.value;
-    setLanguage(selectedLang);
-    setCode(codeTemplates[selectedLang]);
-  };
-  
-
-  const codeTemplates = {
-    cpp: `#include<bits/stdc++.h>
-using namespace std;
-
-int main()
-{
-    
-    return 0;
-}`,
-  python: `def main():
-    pass
-
-if __name__ == "__main__":
-    main()`,
-  java: `public class Main {
-    public static void main(String[] args) {
-        // your code here
-    }
-}`
-  };
-  
-
   const handleReview = async () => {
     setLoadingReview(true);
     try {
@@ -120,34 +107,36 @@ if __name__ == "__main__":
     } finally {
       setLoadingReview(false);
     }
-  }
-  
+  };
 
-  if (!problem) return <p>{message || 'Loading...'}</p>;
+  const handleLanguageChange = (e) => {
+    const selectedLang = e.target.value;
+    setLanguage(selectedLang);
+    setCode(codeTemplates[selectedLang]);
+  };
+
+  if (!problem) return <p className="loading-text">{message || 'Loading...'}</p>;
 
   return (
     <div className="problem-details">
       <h2>{problem.title}</h2>
+      <p>
+        <span className={`diff-tag ${problem.difficulty.toLowerCase()}`}>
+          {problem.difficulty}
+        </span>
+      </p>
       <p>{problem.description}</p>
       <p><strong>Input Format:</strong> {problem.inputFormat}</p>
       <p><strong>Output Format:</strong> {problem.outputFormat}</p>
       <p><strong>Constraints: </strong> <pre>{problem.constraints}</pre></p>
       <p>
-        <strong>Difficulty:</strong>{' '}
-        <span className={`diff-tag ${problem.difficulty.toLowerCase()}`}>
-          {problem.difficulty}
-        </span>
-      </p>
-      <p>
         <strong>Examples:</strong>{' '} <br />
         <ul>
-          {problem.examples.map((test) => (
-
-            <li>
+          {problem.examples.map((test, idx) => (
+            <li key={idx}>
               <p><strong>Input: </strong><pre>{test.input}</pre></p>
               <p><strong>Output: </strong><pre>{test.output}</pre></p>
             </li>
-            
           ))}
         </ul>
       </p>
@@ -171,24 +160,22 @@ if __name__ == "__main__":
       />
 
       <textarea
-        rows="5"
+        rows="3"
         className="input-box"
         placeholder="Input"
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
 
-      <div style={{ marginTop: '1rem' }}>
+      <div className="button-group">
         <button onClick={handleRun} disabled={loadingRun}>
           {loadingRun ? '⏳ Running...' : '▶️ Run Code'}
-        </button>{' '}
+        </button>
         <button onClick={handleSubmit} disabled={loadingSubmit}>
-        {loadingSubmit ? '⏳ Submitting...' : '📤 Submit Code'}
-          
-        </button>{' '}
+          {loadingSubmit ? '⏳ Submitting...' : '📤 Submit Code'}
+        </button>
         <button onClick={handleReview} disabled={loadingReview}>
-        {loadingReview ? '⏳ Reviewing...' : '📤 AI Review'}
-          
+          {loadingReview ? '⏳ Reviewing...' : '🤖 AI Review'}
         </button>
       </div>
 
@@ -200,22 +187,30 @@ if __name__ == "__main__":
       )}
 
       {message && (
-        <div className="feedback">
+        <div className={`feedback ${message.includes('Accepted') ? 'accepted' : 'wrong'}`}>
           <h3>📢 Verdict:</h3>
           <p>{message}</p>
         </div>
       )}
 
-      {review && (
+      {loadingReview ? (
+        <div className="ai-review-loading">
+          <div className="loading-shimmer"></div>
+          <p>🤖 AI is analyzing your code...</p>
+        </div>
+      ) : review && (
         <div className="review-box">
-          <h3>🤖 AI Review:</h3>
+          <div className="review-header">
+            <h3>🤖 AI Review</h3>
+            <button className="copy-btn" onClick={() => navigator.clipboard.writeText(review)}>
+              📋 Copy
+            </button>
+          </div>
           <div className="review-content">
             <ReactMarkdown>{review}</ReactMarkdown>
           </div>
         </div>
       )}
-
-
     </div>
   );
 }

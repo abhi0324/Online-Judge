@@ -1,40 +1,92 @@
 .form-container {
-    max-width: 400px;
-    margin: 5rem auto;
-    padding: 2rem;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f5f7fa;
+  }
+  
+  .form-card {
+    background: #fff;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    width: 350px;
     text-align: center;
-}
-
-.form-box input {
-    width: 90%;
-    padding: 0.75rem;
+    transition: all 0.3s ease;
+  }
+  
+  .form-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  .form-subtitle {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-box input {
+    width: 100%;
+    padding: 0.8rem;
     margin: 0.5rem 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.form-box button {
-    width: 95%;
-    padding: 0.75rem;
-    background-color: #007bff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #f9f9f9;
+    transition: 0.3s;
+  }
+  
+  .form-box input:focus {
+    border-color: #007bff;
+    background: #fff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+  }
+  
+  .form-box button {
+    width: 100%;
+    padding: 0.8rem;
+    background: linear-gradient(45deg, #007bff, #0056b3);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.form-box button:hover {
-    background-color: #0056b3;
-}
-
-.message {
+    margin-top: 0.8rem;
+    transition: transform 0.2s ease, background 0.3s ease;
+  }
+  
+  .form-box button:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(45deg, #0056b3, #00418a);
+  }
+  
+  .message {
     margin-top: 1rem;
-    font-weight: bold;
+    font-size: 0.95rem;
     color: #d9534f;
-}
+  }
+  
+  .message.success {
+    color: #28a745;
+  }
+  
+  .switch-text {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .switch-text a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .switch-text a:hover {
+    text-decoration: underline;
+  }
+  

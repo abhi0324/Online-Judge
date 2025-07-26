@@ -6,7 +6,6 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const token = localStorage.getItem('token');
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
-
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -25,15 +24,22 @@ function Navbar() {
         <div className="navbar-left">
           <Link to="/" className="nav-logo">JudgeX</Link>
         </div>
-        <div className="hamburger" onClick={handleHamburgerClick}>
+
+        {/* Hamburger Menu */}
+        <div
+          className={`hamburger ${menuOpen ? 'open' : ''}`}
+          onClick={handleHamburgerClick}
+        >
           <span></span>
           <span></span>
           <span></span>
         </div>
-        <div className={`navbar-right${menuOpen ? ' open' : ''}`}>
+
+        {/* Links */}
+        <div className={`navbar-right ${menuOpen ? 'open' : ''}`}>
           {token && (
             <>
-              {isAdmin && <Link to="/admin-dashboard" className="nav-link">Admin Dashboard</Link>}
+              {isAdmin && <Link to="/admin-dashboard" className="nav-link">Admin</Link>}
               <Link to="/problems" className="nav-link">Problems</Link>
               <Link to="/submissions" className="nav-link">Submissions</Link>
               <Link to="/leaderboard" className="nav-link">Leaderboard</Link>
@@ -42,7 +48,7 @@ function Navbar() {
           {!token ? (
             <>
               <Link to="/login" className="nav-link">Login</Link>
-              <Link to="/register" className="nav-link">Register</Link>
+              <Link to="/register" className="nav-link register-btn">Register</Link>
             </>
           ) : (
             <button onClick={handleLogout} className="logout-btn">Logout</button>

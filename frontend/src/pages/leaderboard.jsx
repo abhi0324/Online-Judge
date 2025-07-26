@@ -34,7 +34,7 @@ function Leaderboard() {
 
   return (
     <div className="leaderboard-container">
-      <h2>🏆 Leaderboard</h2>
+      <h2 className="leaderboard-title">🏆 Leaderboard</h2>
       {error && <p className="error">{error}</p>}
       <div className="leaderboard-table">
         <div className="leaderboard-header">
@@ -47,7 +47,7 @@ function Leaderboard() {
             key={user.username + index}
             className={`leaderboard-row ${
               user.username === currentUsername ? 'highlight-user' : ''
-            }`}
+            } ${index < 3 ? `top-${index + 1}` : ''}`}
           >
             <span>#{index + 1} {getBadge(index)}</span>
             <span>{user.username}</span>

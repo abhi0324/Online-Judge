@@ -1,40 +1,106 @@
 .submission-container {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #f4f4f4;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-  
-  .submission-container h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  .submission-item {
-    margin-bottom: 2rem;
-  }
-  
-  .submission-header {
-    display: flex;
-    justify-content: space-between;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-  
-  .code-block {
-    background-color: #272822;
-    color: #f8f8f2;
-    padding: 1rem;
-    border-radius: 6px;
-    font-family: monospace;
-    overflow-x: auto;
-  }
-  
-  .error {
-    color: red;
-    font-weight: bold;
-    text-align: center;
-  }
-  
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.submission-title {
+  text-align: center;
+  font-size: 2rem;
+  color: #2563eb;
+  margin-bottom: 20px;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.no-submissions {
+  text-align: center;
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+.submission-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.submission-card {
+  background: #f8f9fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 15px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.submission-card:hover {
+  transform: translateY(-3px);
+}
+
+.submission-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.problem-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.verdict {
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.verdict.accepted {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.verdict.wrong {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.verdict.runtime {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.code-block {
+  background: #1e293b;
+  color: #e5e7eb;
+  padding: 10px;
+  border-radius: 6px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.toggle-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  transition: background 0.2s;
+}
+
+.toggle-btn:hover {
+  background: #1d4ed8;
+}

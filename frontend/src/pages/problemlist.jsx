@@ -71,10 +71,12 @@ function ProblemList() {
         {filteredProblems.map((prob) => (
           <li key={prob._id} className="problem-card">
             <div className="problem-card-row">
-              <h3 className="problem-title">{prob.title}</h3>
-              <span className={`badge ${prob.difficulty.toLowerCase()}`}>{prob.difficulty}</span>
+              <div className="problem-info">
+                <h3 className="problem-title">{prob.title}</h3>
+                <span className={`badge ${prob.difficulty.toLowerCase()}`}>{prob.difficulty}</span>
+              </div>
+              <a href={`/problems/${prob._id}`} className="view-btn">View</a>
             </div>
-            <a href={`/problems/${prob._id}`} className="view-btn">View</a>
           </li>
         ))}
       </ul>

@@ -54,17 +54,12 @@
 }
 
 .problem-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 1rem 1.2rem;
   border-radius: 10px;
   background: #f8f9fc;
   border: 1px solid #e1e1e1;
   transition: transform 0.2s ease, background 0.3s ease;
-  flex-wrap: wrap;
   box-sizing: border-box;
-  position: relative;
 }
 
 .problem-card:hover {
@@ -77,9 +72,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.problem-info {
+  display: flex;
+  align-items: center;
   gap: 10px;
-  flex-wrap: nowrap;
 }
 
 .problem-title {
@@ -104,7 +104,6 @@
 
 /* View Button */
 .view-btn {
-  display: inline-block;
   padding: 0.5rem 1.2rem;
   background: linear-gradient(45deg, #007bff, #0056b3);
   color: #fff;
@@ -113,7 +112,6 @@
   font-size: 0.9rem;
   transition: transform 0.2s, box-shadow 0.2s;
   white-space: nowrap;
-  margin-top: 0.5rem;
 }
 
 .view-btn:hover {
@@ -126,7 +124,6 @@
   .toolbar {
     flex-direction: column;
     gap: 0.8rem;
-    align-items: stretch;
   }
 
   .search-input,
@@ -136,24 +133,21 @@
     padding: 0.8rem;
   }
 
-  .problem-card {
+  .problem-card-row {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.8rem;
-    padding: 1rem;
+    gap: 0.5rem;
   }
 
-  .problem-card-row {
-    flex-direction: row;
-    justify-content: space-between;
+  .problem-info {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
 
   .view-btn {
     width: 100%;
     text-align: center;
-    margin-top: 0.5rem;
     padding: 0.6rem 0;
-    box-sizing: border-box;
   }
 }

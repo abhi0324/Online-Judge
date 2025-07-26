@@ -12,4 +12,17 @@ export default defineConfig({
     host: true,
     strictPort: true,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
+  },
+  // Add this for React Router
+  resolve: {
+    alias: {
+      '@': '/src',
+    },
+  }
 })

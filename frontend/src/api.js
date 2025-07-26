@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: import.meta.env.VITE_BACKEND_URL
 });
 
 // Attach token
@@ -17,7 +17,7 @@ API.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.clear();
-      window.location.href = "/login"; // auto-redirect
+      window.location.href = "/login"; 
     }
     return Promise.reject(error);
   }

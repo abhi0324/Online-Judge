@@ -1,9 +1,9 @@
-import {exec} from 'child_process'; // To execute system command (like g++, python)
-import fs from 'fs'; // For file system operation (read/write/delete)
-import path from 'path'; // for building platform independent file paths
-import {v4 as uuidv4} from 'uuid'; // To generate unique filename for each run 
+import { exec } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
-export const executeCode = (code, language, input='') => {
+export const executeCode = (code, language, input = '') => {
     return new Promise((resolve, reject) => {
         const filename = uuidv4();
         let sourcePath = '';
@@ -11,69 +11,82 @@ export const executeCode = (code, language, input='') => {
         let command = '';
 
         try {
-          if (!fs.existsSync('temp')) {
-            fs.mkdirSync('temp');
-        }
-        
-            if(input){
+            if (!fs.existsSync('temp')) {
+                fs.mkdirSync('temp');
+            }
+
+            // Detect input usage
+            const requiresInput = (
+                (language === 'cpp' && /cin\s*>>/.test(code)) ||
+                (language === 'python' && /\binput\s*\(/.test(code)) ||
+                (language === 'java' && /\.next\s*\(/.test(code))
+            );
+
+            // If code expects input but none provided
+            if (requiresInput && !input.trim()) {
+                return reject("Your program is waiting for input, but no input was provided.");
+            }
+
+            // Write input to file if provided
+            if (input.trim()) {
                 fs.writeFileSync(inputPath, input);
             }
 
-            switch(language){
+            // Prepare compile & run commands
+            switch (language) {
                 case 'cpp':
-                  sourcePath = path.join('temp', `${filename}.cpp`);
-                  fs.writeFileSync(sourcePath, code);
-                  command = `g++ ${sourcePath} -o temp/${filename} && ./temp/${filename}`;
-                  break;
-            
+                    sourcePath = path.join('temp', `${filename}.cpp`);
+                    fs.writeFileSync(sourcePath, code);
+                    command = `g++ ${sourcePath} -o temp/${filename} && ./temp/${filename}`;
+                    break;
+
                 case 'python':
-                  sourcePath = path.join('temp', `${filename}.py`);
-                  fs.writeFileSync(sourcePath, code);
-                  command = `python3 ${sourcePath}`;
-                  break;
-            
+                    sourcePath = path.join('temp', `${filename}.py`);
+                    fs.writeFileSync(sourcePath, code);
+                    command = `python3 ${sourcePath}`;
+                    break;
+
                 case 'java':
-                  sourcePath = path.join('temp', `${filename}.java`);
-                  fs.writeFileSync(sourcePath, code);
-                  command = `javac ${sourcePath} && java -cp temp ${filename}`;
-                  break;
-            
-            
+                    sourcePath = path.join('temp', `${filename}.java`);
+                    fs.writeFileSync(sourcePath, code);
+                    command = `javac ${sourcePath} && java -cp temp ${filename}`;
+                    break;
+
                 default:
-                  return reject('Unsupported language');
-              }
+                    return reject('Unsupported language');
+            }
 
-              if(input){
-                command +=` < ${inputPath}`;
-              }
+            // Add input redirection if input exists
+            if (input.trim()) {
+                command += ` < ${inputPath}`;
+            }
 
-              exec(command, (err, stdout, stderr)=>{
-                // Cleanup
+            // Execute with a 5-second timeout
+            exec(command, { timeout: 5000 }, (err, stdout, stderr) => {
                 try {
-                  if (fs.existsSync(sourcePath)) fs.rmSync(sourcePath, { force: true });
-                  if (fs.existsSync(inputPath)) fs.rmSync(inputPath, { force: true });
-                  if (language === 'cpp' && fs.existsSync(`temp/${filename}`)) {
-                    fs.rmSync(`temp/${filename}`, { force: true });
-                  }
-                  if (language === 'java' && fs.existsSync(`temp/${filename}.class`)) {
-                    fs.rmSync(`temp/${filename}.class`, { force: true });
-                  }
-                } 
-                catch (cleanupErr) {
-                  console.error('Cleanup error:', cleanupErr.message);
+                    if (fs.existsSync(sourcePath)) fs.rmSync(sourcePath, { force: true });
+                    if (fs.existsSync(inputPath)) fs.rmSync(inputPath, { force: true });
+                    if (language === 'cpp' && fs.existsSync(`temp/${filename}`)) {
+                        fs.rmSync(`temp/${filename}`, { force: true });
+                    }
+                    if (language === 'java' && fs.existsSync(`temp/${filename}.class`)) {
+                        fs.rmSync(`temp/${filename}.class`, { force: true });
+                    }
+                } catch (cleanupErr) {
+                    console.error('Cleanup error:', cleanupErr.message);
                 }
-          
-                // Handle execution error
+
                 if (err) {
+                    if (err.killed) {
+                        return reject('Execution timed out (possible infinite loop)');
+                    }
                     return reject(stderr || err.message);
                 }
-          
-                // Send result
+
                 return resolve(stdout.trim());
-              });
-        }
-        catch(error){
+            });
+        } catch (error) {
             return reject('Server error during execution');
         }
-    })
-}
+    });
+};

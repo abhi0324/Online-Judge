@@ -41,7 +41,7 @@ int main()
   }, [id]);
 
   const codeTemplates = {
-    cpp: `#include<bits/stdc++.h>
+    cpp: `#include<iostream>
 using namespace std;
 
 int main()

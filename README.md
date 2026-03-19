@@ -1,4 +1,4 @@
-# JudgeX
+# JudgeX - Online Coding Platform 
 
 [Live Demo](https://judgex.vercel.app/)
 

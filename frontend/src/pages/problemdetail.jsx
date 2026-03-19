@@ -8,7 +8,7 @@ import ReactMarkdown from 'react-markdown';
 function ProblemDetails() {
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
-  const [code, setCode] = useState(`#include<bits/stdc++.h>
+  const [code, setCode] = useState(`#include<iostream>
 using namespace std;
   
 int main()

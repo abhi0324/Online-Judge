@@ -1,6 +1,6 @@
 # JudgeX - Online Coding Platform 
 
-[Live Demo](https://judgex.vercel.app/)
+[Live Demo](https://judge-x-online-coding-platform.vercel.app/)
 
 A full-stack web application for coding practice and programming competitions, featuring real-time code execution, AI-powered code review, user authentication, problem management, and a leaderboard.
 

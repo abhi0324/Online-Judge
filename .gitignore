@@ -6,3 +6,4 @@ compiler/backend/node_modules/
 compiler/frontend/node_modules/
 compiler/backend/.env
 keys
+.DS_Store

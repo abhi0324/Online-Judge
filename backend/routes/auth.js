@@ -2,6 +2,9 @@ import express from 'express';
 import User from '../models/user.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { OAuth2Client } from 'google-auth-library';
+import 'dotenv/config';
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const router = express.Router();
 
@@ -76,5 +79,69 @@ router.post('/login', async (req, res) =>{
     }
 });
 
+// POST /api/auth/google
+
+router.post('/google', async (req, res)=>{
+    const { token } = req.body;
+    try {
+        const ticket = await googleClient.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+
+        const payload = ticket.getPayload();
+        const { email, name, sub: googleId, picture } = payload;
+
+        let user = await User.findOne({email});
+
+        if(!user){
+            let baseUsername = name.replace(/\s+/g, '').toLowerCase();
+            let username = baseUsername;
+            let count = 1;
+            while(await User.findOne({ username })) {
+                username = `${baseUsername}${count++}`;
+            }
+
+            const isAdmin = (email == 'admin0324@gmail.com');
+
+            user = new User({
+                username,
+                email, 
+                googleId, 
+                avatar: picture,
+                isAdmin,
+            });
+
+            await user.save();
+        } else if(!user.googleId) {
+            user.googleId = googleId;
+
+            if(!user.avatar && picture) user.avatar = picture;
+            await user.save();
+        }
+
+        const jwtToken = jwt.sign({ id: user._id, email: user.email }, 
+            process.env.JWT_SECRET,
+            { expiresIn: '2h'}
+        );
+
+        res.status(200).json({
+            msg: 'Google authentication successfull',
+            token: jwtToken,
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                avatar: user.avatar
+            }
+        });
+    } catch(error) {
+        console.error('Google Auth Error:', error);
+        res.status(400).json({
+            error: 'Google authentication failed'
+        });
+    }
+});
 
 export default router;

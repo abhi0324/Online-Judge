@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import API from '../api';
 import { useNavigate } from 'react-router-dom';
 import '../styles/form.css';
+import { GoogleLogin } from '@react-oauth/google';
 
 function Register() {
   const [form, setForm] = useState({ username: '', email: '', password: '' });
@@ -22,6 +23,23 @@ function Register() {
       setMessage(err.response?.data?.error || 'Something went wrong');
     }
   };
+
+  const handleGoogleSucess = async (credentailResponse) => {
+    try{
+      const res = await API.post('/auth/google', {
+        token: credentailResponse.credential,
+      });
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('isAdmin', res.data.user.isAdmin);
+      setMessage('Login Succesful!');
+      navigate(res.data.user.isAdmin ? '/admin-dashboard' : '/problems');
+    } catch (err) {
+      setMessage(err.response?.data?.error || 'Google login failed');
+    }
+  }
+  const handleGoogleError = () => {
+    setMessage('Google sign-in was unsucessful');
+  }
 
   return (
     <div className="form-container">
@@ -51,6 +69,20 @@ function Register() {
             required
           />
           <button type="submit">Register</button>
+          <div className="flex items-center my-5">
+            <div className="flex-grow border-0 border-t border-solid border-gray-300"></div>
+            <span className="mx-3 text-sm text-gray-500 lowercase">or</span>
+            <div className="flex-grow border-0 border-t border-solid border-gray-300"></div>
+          </div>
+          <div className="flex justify-center my-[15px]">
+              <GoogleLogin
+                onSuccess={handleGoogleSucess}
+                onError={handleGoogleError}
+                text="signup_with"
+                theme="filled_blue"
+                shape="pill"
+              />
+          </div>
         </form>
         {message && <p className="message success">{message}</p>}
       </div>

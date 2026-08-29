@@ -1,7 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express'
 import mongoose from 'mongoose';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import router from './routes/auth.js';
 import protectedroutes from './routes/protected.js';
 import problem from './routes/problemroute.js';
@@ -9,7 +10,6 @@ import submitRoutes from './routes/submit.js';
 import Run from './routes/run.js';
 import Leaderboard from './routes/leaderboard.js';
 import gemini from './routes/gemini-review.js';
-dotenv.config();
 
 const app = express();
 app.use(cors());

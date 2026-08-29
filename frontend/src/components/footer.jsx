@@ -11,12 +11,10 @@ function Footer() {
           <h2 className="footer-logo">JudgeX</h2>
         </div>
 
-        {/* Center: Navigation Links */}
-        <div className="footer-links">
-          <Link to="/">Home</Link>
-          <Link to="/problems">Problems</Link>
-          <Link to="/leaderboard">Leaderboard</Link>
-        </div>
+<div className="footer-bottom">
+  <span>© {new Date().getFullYear()} JudgeX • Made with ❤️ by <strong>Abhiswant Chaudhary</strong></span>
+</div>
+
 
         {/* Right: Social Icons */}
         <div className="footer-right">
@@ -30,10 +28,7 @@ function Footer() {
             <i className="fab fa-x-twitter"></i>
           </a>
         </div>
-      </div>
-      <div className="footer-bottom">
-        © {new Date().getFullYear()} JudgeX. All rights reserved.
-      </div>
+      </div> 
     </footer>
   );
 }

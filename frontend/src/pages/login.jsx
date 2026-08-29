@@ -19,6 +19,7 @@ function Login() {
       const res = await API.post('/auth/login', form);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('isAdmin', res.data.user.isAdmin);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
       setMessage(res.data.msg);
       navigate(res.data.user.isAdmin ? '/admin-dashboard' : '/problems');
     } catch (err) {
@@ -33,6 +34,7 @@ function Login() {
       });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('isAdmin', res.data.user.isAdmin);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
       setMessage('Login Succesful!');
       navigate(res.data.user.isAdmin ? '/admin-dashboard' : '/problems');
     } catch (err) {

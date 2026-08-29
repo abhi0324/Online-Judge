@@ -5,13 +5,13 @@ import Footer from "../components/footer.jsx";
 
 function Layout() {
   return (
-    <>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <Navbar />
-      <main style={{ minHeight: "80vh" }}>
+      <main style={{ flex: 1 }}>
         <Outlet />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 

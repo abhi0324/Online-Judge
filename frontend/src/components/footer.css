@@ -1,7 +1,7 @@
 .footer {
   background: linear-gradient(135deg, #0f172a, #1e293b);
   color: #fff;
-  padding: 0.8rem 1rem 0.5rem;
+  padding: 0.65rem 1.5rem;
   font-family: 'Inter', sans-serif;
 }
 
@@ -15,13 +15,15 @@
 }
 
 .footer-left {
-  flex: 1;
+  padding: 0;
+  margin: 0;
 }
 
 .footer-logo {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: bold;
   color: #3b82f6;
+  margin: 0;
 }
 
 .footer-links {
@@ -44,10 +46,9 @@
 }
 
 .footer-right {
-  flex: 1;
   display: flex;
   justify-content: flex-end;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .footer-right a {
@@ -63,12 +64,13 @@
 
 .footer-bottom {
   text-align: center;
-  margin-top: 0.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 0.5rem;
-  font-size: 0.8rem;
+  padding: 0;
+  margin: 0;
+  font-size: 0.85rem;
   color: #9ca3af;
+  white-space: nowrap;
 }
+
 
 /* Responsive */
 @media (max-width: 768px) {

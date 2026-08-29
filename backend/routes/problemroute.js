@@ -25,17 +25,75 @@ router.post('/', verifyToken, verifyAdmin, async(req, res)=> {
 });
 
 
-router.get('/', verifyToken, async (req, res) => {
-    try{
+import jwt from 'jsonwebtoken';
+import Submission from '../models/submission.js';
+
+// GET /api/problems (Public with optional user auth status)
+router.get('/', async (req, res) => {
+    try {
         const problems = await Problem.find({}, 'title difficulty');
-        res.json(problems);
+
+        // Check if user is logged in via token
+        const authHeader = req.headers.authorization;
+        let userId = null;
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+            const token = authHeader.split(' ')[1];
+            try {
+                const decoded = jwt.verify(token, process.env.JWT_SECRET);
+                userId = decoded.id;
+            } catch (e) {
+                // Invalid or expired token, proceed as guest
+                userId = null;
+            }
+        }
+
+        if (!userId) {
+            const problemsWithStatus = problems.map(p => ({
+                ...p.toObject(),
+                status: 'unsolved'
+            }));
+            return res.json(problemsWithStatus);
+        }
+
+        // Fetch user's submissions
+        const submissions = await Submission.find({ userId }, 'problemId verdict');
+        const solvedSet = new Set();
+        const attemptedSet = new Set();
+
+        submissions.forEach(sub => {
+            if (!sub.problemId) return;
+            const pIdStr = sub.problemId.toString();
+            if (sub.verdict && sub.verdict.toLowerCase().includes('accepted')) {
+                solvedSet.add(pIdStr);
+            } else {
+                attemptedSet.add(pIdStr);
+            }
+        });
+
+        const problemsWithStatus = problems.map(p => {
+            const pIdStr = p._id.toString();
+            let status = 'unsolved';
+            if (solvedSet.has(pIdStr)) {
+                status = 'solved';
+            } else if (attemptedSet.has(pIdStr)) {
+                status = 'attempted';
+            }
+            return {
+                ...p.toObject(),
+                status
+            };
+        });
+
+        res.json(problemsWithStatus);
     }
-    catch(error){
-        res.status(500).json({error: 'Failed to fetch the problems'});
+    catch (error) {
+        console.error('Error fetching problems:', error);
+        res.status(500).json({ error: 'Failed to fetch the problems' });
     }
 });
 
-router.get('/:id', verifyToken, async(req, res) => {
+// GET /api/problems/:id (Public)
+router.get('/:id', async(req, res) => {
     try{
         const problem = await Problem.findById(req.params.id);
         if(!problem){

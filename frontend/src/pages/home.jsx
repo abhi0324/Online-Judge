@@ -10,44 +10,120 @@ function Home() {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
+          <div className="hero-badge">
+            <span className="badge-pulse"></span>
+            <span>⚡ Next-Gen Online Judge • Powered by Gemini AI</span>
+          </div>
+
           <h1 className="hero-title">
-            Welcome to <span className="highlight">JudgeX</span>
+            Level Up Your Coding with <span className="highlight">JudgeX</span>
           </h1>
+
           <p className="hero-subtitle">
-            Practice coding, get AI-powered reviews, and climb the leaderboard! 🚀  
-            A modern platform for coding enthusiasts to <span>code, conquer,</span> and <span>compete</span>.
+            Execute code in sandboxed Docker containers, receive deep AI feedback, and conquer algorithmic challenges in <strong>C++</strong>, <strong>Python</strong>, and <strong>Java</strong>.
           </p>
 
-          {!token ? (
-            <div className="hero-buttons">
-              <Link to="/register" className="btn primary">
-                Get Started
+          <div className="hero-buttons">
+            {!token ? (
+              <>
+                <Link to="/register" className="btn primary">
+                  <i className="fas fa-bolt"></i> Start Coding Free
+                </Link>
+                <Link to="/login" className="btn secondary">
+                  <i className="fas fa-sign-in-alt"></i> Sign In
+                </Link>
+              </>
+            ) : (
+              <Link to="/problems" className="btn primary large-btn">
+                <i className="fas fa-terminal"></i> Explore Problem Set
               </Link>
-              <Link to="/login" className="btn secondary">
-                Login
-              </Link>
+            )}
+          </div>
+        </div>
+
+        {/* Stats Row */}
+        <div className="stats-container">
+          <div className="stat-card">
+            <div className="stat-icon"><i className="fas fa-code"></i></div>
+            <div className="stat-info">
+              <span className="stat-number">Multi-Lang</span>
+              <span className="stat-label">C++, Python & Java</span>
             </div>
-          ) : (
-            <Link to="/problems" className="btn primary">
-              Go to Problems
-            </Link>
-          )}
+          </div>
+          <div className="stat-card">
+            <div className="stat-icon ai"><i className="fas fa-robot"></i></div>
+            <div className="stat-info">
+              <span className="stat-number">Gemini AI</span>
+              <span className="stat-label">Instant Code Review</span>
+            </div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-icon speed"><i className="fas fa-tachometer-alt"></i></div>
+            <div className="stat-info">
+              <span className="stat-number">&lt; 1s</span>
+              <span className="stat-label">Judge Execution</span>
+            </div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-icon rank"><i className="fas fa-trophy"></i></div>
+            <div className="stat-info">
+              <span className="stat-number">Global</span>
+              <span className="stat-label">Live Leaderboard</span>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Features Section */}
       <section className="features-section">
-        <h2 className="section-title">Platform Highlights</h2>
+        <div className="section-header">
+          <span className="sub-heading">ENGINEERED FOR CODERS</span>
+          <h2 className="section-title">Everything You Need to Master Algorithms</h2>
+        </div>
+
         <div className="features-grid">
           {[
-            { title: "⚡ Real-time Code Execution", desc: "Run C++, Python, and Java instantly in a sandboxed environment." },
-            { title: "🤖 AI Code Review", desc: "Get instant feedback on your code powered by Google Gemini AI." },
-            { title: "🏆 Leaderboard", desc: "Track your global rank and compete with other coders." },
-            { title: "📜 Submission History", desc: "Review your past submissions and improve over time." },
-            { title: "🚀 Competitive Challenges", desc: "Solve coding problems designed to enhance your skills." },
-            { title: "📱 Responsive UI", desc: "Enjoy a smooth experience across all devices." }
+            {
+              icon: "fas fa-shield-alt",
+              title: "Sandboxed Execution",
+              desc: "Run untrusted user code safely inside isolated, resource-constrained compiler sandboxes.",
+              color: "blue",
+            },
+            {
+              icon: "fas fa-brain",
+              title: "AI Code Analysis",
+              desc: "Get intelligent feedback on time complexity, edge cases, and code style powered by Google Gemini.",
+              color: "indigo",
+            },
+            {
+              icon: "fas fa-trophy",
+              title: "Real-time Leaderboard",
+              desc: "Climb the global ranks by solving problems across Easy, Medium, and Hard tiers.",
+              color: "amber",
+            },
+            {
+              icon: "fas fa-history",
+              title: "Submission Timeline",
+              desc: "Inspect your historical submissions, execution runtime, and verdict breakdowns anytime.",
+              color: "emerald",
+            },
+            {
+              icon: "fas fa-laptop-code",
+              title: "Monaco Code Editor",
+              desc: "Industry-standard VS Code powered editor with syntax highlighting, shortcuts, and boilerplate templates.",
+              color: "cyan",
+            },
+            {
+              icon: "fab fa-google",
+              title: "Google One-Tap Auth",
+              desc: "Seamless single sign-on experience for quick access from any device or workstation.",
+              color: "purple",
+            },
           ].map((feature, idx) => (
-            <div key={idx} className="feature-card animated-card">
+            <div key={idx} className={`feature-card card-${feature.color}`}>
+              <div className="feature-icon-wrap">
+                <i className={feature.icon}></i>
+              </div>
               <h3>{feature.title}</h3>
               <p>{feature.desc}</p>
             </div>
@@ -57,19 +133,21 @@ function Home() {
 
       {/* Call to Action */}
       <section className="cta-section">
-        <h2>Are You Ready to Test Your Skills?</h2>
-        <p>
-          Join now, practice coding problems, and climb the leaderboard to prove yourself!
-        </p>
-        {!token ? (
-          <Link to="/register" className="btn primary large">
-            Join Now
-          </Link>
-        ) : (
-          <Link to="/problems" className="btn primary large">
-            Start Solving
-          </Link>
-        )}
+        <div className="cta-box">
+          <h2>Ready to Ace Your Next Coding Interview?</h2>
+          <p>
+            Join JudgeX today and start solving curated algorithmic problems with real-time feedback.
+          </p>
+          {!token ? (
+            <Link to="/register" className="btn primary cta-btn">
+              Create Free Account <i className="fas fa-arrow-right"></i>
+            </Link>
+          ) : (
+            <Link to="/problems" className="btn primary cta-btn">
+              Browse Problems <i className="fas fa-arrow-right"></i>
+            </Link>
+          )}
+        </div>
       </section>
     </div>
   );

@@ -3,6 +3,7 @@ import User from '../models/user.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
+import verifyToken from '../middlewares/verifyToken.js';
 import 'dotenv/config';
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -70,6 +71,7 @@ router.post('/login', async (req, res) =>{
                 username: user.username,
                 email: user.email,
                 isAdmin: user.isAdmin,
+                avatar: user.avatar || '',
             }
         });
     }
@@ -136,11 +138,38 @@ router.post('/google', async (req, res)=>{
                 avatar: user.avatar
             }
         });
-    } catch(error) {
+    } catch (error) {
         console.error('Google Auth Error:', error);
-        res.status(400).json({
-            error: 'Google authentication failed'
+        res.status(400).json({ error: 'Google authentication failed' });
+    }
+});
+
+// PUT /api/auth/avatar
+router.put('/avatar', verifyToken, async (req, res) => {
+    const { avatar } = req.body;
+    try {
+        const user = await User.findByIdAndUpdate(
+            req.user.id,
+            { avatar },
+            { new: true }
+        ).select('-password');
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({ 
+            msg: 'Avatar updated successfully', 
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                avatar: user.avatar
+            }
         });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to update avatar' });
     }
 });
 

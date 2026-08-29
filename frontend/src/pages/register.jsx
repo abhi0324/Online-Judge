@@ -31,6 +31,7 @@ function Register() {
       });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('isAdmin', res.data.user.isAdmin);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
       setMessage('Login Succesful!');
       navigate(res.data.user.isAdmin ? '/admin-dashboard' : '/problems');
     } catch (err) {

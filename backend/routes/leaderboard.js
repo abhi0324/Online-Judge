@@ -5,7 +5,8 @@ import verifyToken from '../middlewares/verifyToken.js';
 
 const router = express.Router();
 
-router.get('/',verifyToken, async (req, res) => {
+// GET /api/leaderboard (Public)
+router.get('/', async (req, res) => {
     try {
         const data = await Submission.aggregate([
             { $match: { verdict: "Accepted" } },

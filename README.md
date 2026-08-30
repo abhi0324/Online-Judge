@@ -1,243 +1,221 @@
-# JudgeX - Online Coding Platform 
+# JudgeX – Next-Gen Online Coding & Competitive Programming Platform
 
-[Live Demo](https://judgex.vercel.app/)
+<div align="center">
+  <img src="frontend/public/judgex-favicon.svg" alt="JudgeX Logo" width="80" height="80" />
+  <h3>Sandboxed Code Execution, AI Mentor Reviews, and Global Competitive Leaderboard</h3>
 
-A full-stack web application for coding practice and programming competitions, featuring real-time code execution, AI-powered code review, user authentication, problem management, and a leaderboard.
+  [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+  [![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+  [![Express.js](https://img.shields.io/badge/Express.js-4.x-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+  [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+  [![Google Gemini AI](https://img.shields.io/badge/Gemini_AI-2.5_Flash-8E75B2?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+  [![Docker](https://img.shields.io/badge/Docker-Sandboxed-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+  [![Live Demo](https://img.shields.io/badge/Live_Demo-JudgeX-3B82F6?style=for-the-badge&logo=vercel&logoColor=white)](https://judgex.vercel.app/)
+</div>
 
 ---
 
-## 🚀 Features
+## 📌 Overview
 
-- **User Authentication**: Secure registration/login with JWT.
-- **Problem Management**: Admins can create, edit, and delete problems with test cases and examples.
-- **Code Submission & Evaluation**: Users submit code in C++, Python, or Java; code is executed and auto-evaluated against test cases.
-- **AI Code Review**: Get instant feedback on your code using Google Gemini AI.
-- **Leaderboard**: Track top users by problems solved.
-- **Submission History**: View your past submissions and verdicts.
-- **Responsive UI**: Modern, mobile-friendly React interface.
+**JudgeX** is a full-stack algorithmic coding platform engineered for technical interview preparation, competitive programming, and automated code evaluation. It features sandboxed multi-language compilation (**C++**, **Python 3**, **Java**), automated test case verification, Google Gemini AI code mentoring, progressive 3-tier hints, customizable user avatars, and real-time global rankings.
+
+---
+
+## 🏗️ Architecture Workflow
+
+```mermaid
+graph TD
+    Client([User / React SPA]) -->|1. Code Submission / Run| API[Express API Server]
+    
+    subgraph Auth & User Management
+        API -->|JWT & Google OAuth| AuthService[Auth Controller]
+        AuthService -->|Persist Users & Avatars| Mongo[(MongoDB Atlas)]
+    end
+    
+    subgraph Sandboxed Execution Engine
+        API -->|Compile & Execute| Executor[Sandbox Child Process / Docker]
+        Executor -->|Compare Output| Testcases[(Hidden Test Cases)]
+        Executor -->|Return Verdict| API
+    end
+    
+    subgraph Gemini AI Mentor
+        API -->|Review / Hint Request| GeminiService[Gemini Multi-Model Fallback Engine]
+        GeminiService -->|Primary: 2.5 Flash| Gemini1[Gemini 2.5 Flash]
+        GeminiService -->|Fallback: 2.0 / 1.5| Gemini2[Gemini 2.0 / 1.5 Flash]
+    end
+
+    API -->|Verdict, AI Feedback, Score| Client
+```
+
+---
+
+## 🚀 Key Features
+
+### ⚡ Sandboxed Code Execution
+* **Multi-Language Support**: Native compiler and runtime execution for **C++ (GCC)**, **Python 3**, and **Java (OpenJDK)**.
+* **Isolated Environment**: Untrusted user code is executed in isolated processes with strict memory and time limits (2.0s limit, 256MB RAM).
+* **Test Case Verification**: Automatically runs submitted solutions against predefined sample inputs and hidden judge test cases to determine verdicts (`Accepted`, `Wrong Answer`, `Time Limit Exceeded`, `Runtime Error`).
+
+### 🤖 Gemini AI Mentor & 3-Tier Progressive Hints
+* **Multi-Model Fallback Engine**: Automatic priority failover (`gemini-2.5-flash` $\rightarrow$ `gemini-2.0-flash` $\rightarrow$ `gemini-1.5-flash`) ensuring 99.9% AI review uptime without downtime during peak loads.
+* **Deep Code Review**: Evaluates time/space algorithmic complexity ($O(N)$, $O(\log N)$), analyzes missed edge cases, and suggests clean idiomatic refactors without spoiling the solution directly.
+* **3-Tier Progressive Hints**:
+  * **Hint 1 (Intuition)**: Core pattern recognition and conceptual thinking.
+  * **Hint 2 (Approach)**: Data structure choice and algorithm roadmap.
+  * **Hint 3 (Pseudocode)**: Structured step-by-step implementation guide.
+* **Rate Limiting & Cooldowns**: Built-in backend rate limiters (`express-rate-limit`) and frontend countdown timers (10s for AI review, 5s for hints) preventing quota exhaustion.
+
+### 📊 Problem Repository & Progress Tracking
+* **Dynamic Filter Chips & Search**: Filter problems by difficulty (**Easy**, **Medium**, **Hard**) or personal completion status (**✓ Solved**, **⚡ Attempted**, **○ Todo**).
+* **Live Progress Bar**: Displays real-time personal completion metrics ($X / Y \text{ Solved}$).
+
+### 🏆 Global Leaderboard & Hall of Fame
+* **Top 3 Podium**: Visual Gold, Silver, and Bronze podium cards showcasing top algorithmic problem solvers.
+* **Rankings Table**: Real-time rank calculation based on verified problem submissions with active user highlights (`You` badge).
+
+### 👤 Profile & Authentication
+* **Dual Auth Support**: Traditional JWT-based email/password authentication alongside **Google One-Tap OAuth**.
+* **Avatar Customization**: Choose from 8 preset developer avatars (DiceBear Bottts, Adventurer, Pixel-Art) or link a custom image URL.
+
+### 📜 Submission Timeline
+* **Detailed History**: Review historical submission records with exact date/time timestamps, execution runtime, and verdict status.
+* **Syntax Highlighted Code Viewer**: Expandable Monaco-styled code viewer with 1-click clipboard copying.
 
 ---
 
 ## 🛠️ Tech Stack
 
-**Backend**
-- Node.js, Express.js
-- MongoDB (Mongoose)
-- JWT, bcrypt
-- Google Gemini AI API
-- Child process for code execution
-- Docker support
-
-**Frontend**
-- React 19, Vite
-- React Router v7
-- Axios
-- Monaco Editor
-- Modular CSS
+| Layer | Technology |
+|---|---|
+| **Frontend** | React 19, Vite, React Router v7, Monaco Editor, React Markdown, FontAwesome |
+| **Backend** | Node.js, Express.js, `express-rate-limit`, Child Process, Docker |
+| **Database** | MongoDB Atlas, Mongoose |
+| **AI Integration** | Google Gemini Generative AI SDK (`@google/genai`) |
+| **Authentication** | JWT (`jsonwebtoken`), `bcryptjs`, `@react-oauth/google` |
 
 ---
 
-## 📁 Project Structure
+## 📡 API Reference
 
-```
-Online-judge/
-├── backend/
-│   ├── models/         # Mongoose schemas (User, Problem, Submission)
-│   ├── routes/         # API endpoints (auth, problems, submissions, leaderboard, AI review, protected)
-│   ├── middlewares/    # Auth and admin checks
-│   ├── utils/          # Code execution, AI integration
-│   ├── temp/           # Temporary files for code execution
-│   ├── index.js        # Server entry
-│   ├── package.json
-│   ├── Dockerfile      # Docker support for backend
-│   └── .dockerignore
-├── frontend/
-│   ├── src/
-│   │   ├── pages/      # Main pages (Home, Problems, Admin, etc.)
-│   │   ├── components/ # Navbar, Footer, reusable UI
-│   │   ├── layouts/    # Layout wrapper
-│   │   ├── styles/     # CSS modules
-│   │   └── api.js      # Axios config
-│   ├── index.html
-│   ├── package.json
-│   ├── vite.config.js
-│   └── README.md
-├── compiler/           # (Reserved for future use)
-├── keys/               # (Empty, for future use or secrets)
-└── README.md           # Project documentation
-```
+### 🔐 Authentication (`/api/auth`)
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| `POST` | `/api/auth/register` | Register a new user | Public |
+| `POST` | `/api/auth/login` | Sign in with email & password | Public |
+| `POST` | `/api/auth/google` | Authenticate with Google OAuth credential | Public |
+| `PUT` | `/api/auth/avatar` | Update user profile avatar | Bearer Token |
 
----
+### 📚 Problems (`/api/problems`)
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| `GET` | `/api/problems` | List problems with dynamic user solved/attempted status | Public / Optional Token |
+| `GET` | `/api/problems/:id` | Fetch problem details, format, constraints & examples | Public |
+| `POST` | `/api/problems` | Create new coding problem with test cases | Admin Only |
+| `PUT` | `/api/problems/:id` | Update existing problem | Admin Only |
+| `DELETE` | `/api/problems/:id` | Delete problem | Admin Only |
 
-## 🧩 Backend Overview
+### 💻 Execution & Submissions
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| `POST` | `/api/run` | Execute code with custom input | Public |
+| `POST` | `/api/submissions` | Submit code for evaluation against test cases | Bearer Token |
+| `GET` | `/api/submissions` | Retrieve user submission history with timestamps | Bearer Token |
 
-### Main Endpoints
+### 🤖 Gemini AI Mentoring (`/api/gemini-review`)
+| Method | Endpoint | Description | Limits |
+|---|---|---|---|
+| `POST` | `/api/gemini-review` | Request AI code review & complexity analysis | 10 req / 15 min |
+| `POST` | `/api/gemini-review/hint` | Request progressive Hint (Level 1, 2, or 3) | 15 req / 15 min |
 
-- **Auth**
-  - `POST /api/auth/register` — Register new user
-  - `POST /api/auth/login` — Login, returns JWT
-- **Problems**
-  - `GET /api/problems` — List all problems (auth required)
-  - `GET /api/problems/:id` — Get problem details (auth required)
-  - `POST /api/problems` — Add problem (admin only)
-  - `PUT /api/problems/:id` — Edit problem (admin only)
-  - `DELETE /api/problems/:id` — Delete problem (admin only)
-- **Submissions**
-  - `POST /api/submissions` — Submit code for a problem (auth required)
-  - `GET /api/submissions` — Get user’s submissions (auth required)
-- **Leaderboard**
-  - `GET /api/leaderboard` — Get users ranked by problems solved (auth required)
-- **Code Execution**
-  - `POST /api/run` — Run code with input (open)
-- **AI Code Review**
-  - `POST /api/gemini-review` — Get AI feedback on code (auth required)
-- **Protected**
-  - `GET /api/protected` — Example protected route (auth required)
-
-### Data Models
-
-- **User**: username, email, password (hashed), isAdmin, timestamps
-- **Problem**: title, description, input/output format, constraints, difficulty, examples, testCases, createdAt
-- **Submission**: userId, problemId, code, language, verdict, submittedAt
-
-### Utilities
-
-- **executeCode**: Runs code in a sandboxed environment, supports C++, Python, Java. Handles compilation, execution, and cleanup of temp files.
-- **runGemini**: Integrates with Google Gemini AI for code review and feedback.
-
-### Middleware
-
-- **verifyToken**: Checks JWT for protected routes
-- **verifyAdmin**: Checks if user is admin for admin-only routes
-
-### Docker Support
-
-- **Build image:**
-  ```bash
-  cd backend
-  docker build -t online-judge-backend .
-  ```
-- **Run container:**
-  ```bash
-  docker run --env-file .env -p 8000:8000 online-judge-backend
-  ```
+### 🏆 Leaderboard (`/api/leaderboard`)
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| `GET` | `/api/leaderboard` | Get ranked leaderboard based on verified solved problems | Public |
 
 ---
 
-## 🖥️ Frontend Overview
-
-### Main Pages
-
-- `/` — Home
-- `/register` — Register
-- `/login` — Login
-- `/problems` — Problem list
-- `/problems/:id` — Problem details, code editor, run/submit
-- `/submissions` — User’s submission history
-- `/leaderboard` — Leaderboard
-- `/admin-dashboard` — Admin panel (problem management, protected)
-
-### Components & Layout
-
-- **Navbar**: Dynamic links based on auth state
-- **Footer**: Persistent footer
-- **Layout**: Wraps all main pages for consistent UI
-- **ProtectedRoute**: Guards admin routes
-
-### Styles
-
-- Modular CSS for each page/component
-- Global styles for layout and theming
-
----
-
-## ⚡ Getting Started
+## ⚡ Local Setup & Installation
 
 ### Prerequisites
-
-- Node.js v16+
-- MongoDB
-- Google Gemini API key (for AI review)
-- (Optional) Docker for backend
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone <repo-url>
-   cd Online-judge
-   ```
-
-2. **Backend setup**
-   ```bash
-   cd backend
-   npm install
-   ```
-   Create `.env` in `backend/`:
-   ```
-   MONGO_URI=your_mongodb_uri
-   JWT_SECRET=your_jwt_secret
-   PORT=8000
-   GEMINI_API_KEY=your_gemini_api_key
-   ```
-
-3. **Frontend setup**
-   ```bash
-   cd ../frontend
-   npm install
-   ```
-
-### Running the App
-
-- **Start backend**
-  ```bash
-  cd backend
-  npm run dev
-  # Runs on http://localhost:8000
-  ```
-
-- **Start frontend**
-  ```bash
-  cd frontend
-  npm run dev
-  # Runs on http://localhost:5173
-  ```
-
-- **(Optional) Run backend with Docker**
-  ```bash
-  cd backend
-  docker build -t online-judge-backend .
-  docker run --env-file .env -p 8000:8000 online-judge-backend
-  ```
+* **Node.js**: v18.0 or higher
+* **MongoDB**: Local instance or MongoDB Atlas connection URI
+* **Google Gemini API Key**: Obtain from [Google AI Studio](https://aistudio.google.com/)
+* **Google OAuth Client ID**: (Optional) For Google One-Tap Sign In
 
 ---
 
-## 🎯 Usage
-
-- Register/login to access problems
-- Browse and solve problems
-- Submit code and get instant verdicts
-- Get AI-powered code review
-- Track your progress and climb the leaderboard
-- Admins: Manage problems via dashboard
+### 1. Clone the Repository
+```bash
+git clone https://github.com/abhi0324/Online-Judge.git
+cd Online-Judge
+```
 
 ---
 
-## 📝 Contributing
+### 2. Backend Setup
+```bash
+cd backend
+npm install
+```
 
-1. Fork the repo
-2. Create a feature branch
-3. Commit and push your changes
-4. Open a Pull Request
+Create a `.env` file in the `backend/` directory:
+```env
+PORT=8000
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/judgex?retryWrites=true&w=majority
+JWT_SECRET=your_jwt_secret_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
+GOOGLE_CLIENT_ID=your_google_client_id_here
+```
+
+Start the backend server:
+```bash
+npm run dev
+# Server running on http://localhost:8000
+```
+
+---
+
+### 3. Frontend Setup
+```bash
+cd ../frontend
+npm install
+```
+
+Create a `.env` file in the `frontend/` directory:
+```env
+VITE_API_URL=http://localhost:8000/api
+VITE_GOOGLE_CLIENT_ID=your_google_client_id_here
+```
+
+Start the frontend development server:
+```bash
+npm run dev
+# App running on http://localhost:5173
+```
+
+---
+
+## 🐳 Docker Deployment (Optional)
+
+You can run the backend in a containerized environment:
+
+```bash
+cd backend
+docker build -t judgex-backend .
+docker run --env-file .env -p 8000:8000 judgex-backend
+```
 
 ---
 
 ## 📄 License
 
-This project is licensed under the ISC License.
+This project is licensed under the **ISC License**.
 
 ---
 
-## 🤝 Support
+## 👤 Author
 
-For issues or questions, open an issue in the repository.
+**Abhiswant Chaudhary**
+* GitHub: [@abhi0324](https://github.com/abhi0324)
+* LinkedIn: [Abhiswant Chaudhary](https://www.linkedin.com/in/abhiswant-chaudhary-a09253277)
+* X (Twitter): [@abhiswant](https://x.com/abhiswant)
